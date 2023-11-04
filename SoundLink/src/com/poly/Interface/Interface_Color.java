@@ -7,10 +7,10 @@ public interface Interface_Color {
 
     public List<Color> list_Color();
 
-    public int add_Color();
+    public int add_Color(Color o);
 
-    public int remove_Color();
+    public boolean remove_Color(int Color_Id);
 
-    public int update_Color();
+    public int update_Color(Color o);
 
 }

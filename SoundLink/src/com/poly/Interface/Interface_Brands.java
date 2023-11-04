@@ -9,7 +9,7 @@ public interface Interface_Brands {
 
     public int add_Brand(Brands o);
 
-    public boolean remove_Brand(String brand_Id);
+    public boolean remove_Brand(int brand_Id);
 
     public int update_Brand(Brands o);
 }

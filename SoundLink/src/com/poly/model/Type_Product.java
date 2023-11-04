@@ -2,13 +2,13 @@ package com.poly.model;
 
 public class Type_Product {
 
-    private String type_Product_Id, name, description, update_Day;
-    private int quantity;
+    private String name, description, update_Day;
+    private int type_Product_Id, quantity;
 
     public Type_Product() {
     }
 
-    public Type_Product(String type_Product_Id, String name, String description, String update_Day, int quantity) {
+    public Type_Product(int type_Product_Id, String name, String description, String update_Day, int quantity) {
         this.type_Product_Id = type_Product_Id;
         this.name = name;
         this.description = description;
@@ -16,7 +16,7 @@ public class Type_Product {
         this.quantity = quantity;
     }
 
-    public String getType_Product_Id() {
+    public int getType_Product_Id() {
         return type_Product_Id;
     }
 

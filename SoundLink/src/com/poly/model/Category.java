@@ -2,13 +2,13 @@ package com.poly.model;
 
 public class Category {
 
-    private String Categories_Id, Name, Describe, Updated_Time;
-    private int Updated_Person_Id;
+    private String Name, Describe, Updated_Time;
+    private int Categories_Id, Updated_Person_Id;
 
     public Category() {
     }
 
-    public Category(String Categories_Id, String Name, String Describe, String Updated_Time, int Updated_Person_Id) {
+    public Category(int Categories_Id, String Name, String Describe, String Updated_Time, int Updated_Person_Id) {
         this.Categories_Id = Categories_Id;
         this.Name = Name;
         this.Describe = Describe;
@@ -16,7 +16,7 @@ public class Category {
         this.Updated_Person_Id = Updated_Person_Id;
     }
 
-    public String getCategories_Id() {
+    public int getCategories_Id() {
         return Categories_Id;
     }
 

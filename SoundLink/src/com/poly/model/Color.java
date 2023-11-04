@@ -2,22 +2,23 @@ package com.poly.model;
 
 public class Color {
 
-    private String color_Id, color, status;
+    private String  color, status;
+    private int color_Id;
 
     public Color() {
     }
 
-    public Color(String color_Id, String color, String status) {
+    public Color(int color_Id, String color, String status) {
         this.color_Id = color_Id;
         this.color = color;
         this.status = status;
     }
 
-    public String getColor_Id() {
+    public int getColor_Id() {
         return color_Id;
     }
 
-    public void setColor_Id(String color_Id) {
+    public void setColor_Id(int color_Id) {
         this.color_Id = color_Id;
     }
 

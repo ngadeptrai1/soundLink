@@ -7,10 +7,10 @@ public interface Interface_TypeProduct {
 
     public List<Type_Product> list_TypeProduct();
 
-    public int add_TypeProduct();
+    public int add_TypeProduct(Type_Product o);
 
-    public int remove_TypeProduct();
+    public boolean remove_TypeProduct(int ID);
 
-    public int update_TypeProduct();
+    public int update_TypeProduct(Type_Product o);
 
 }

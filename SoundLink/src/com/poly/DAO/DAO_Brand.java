@@ -74,7 +74,7 @@ public class DAO_Brand implements Interface_Brands {
     }
 
     @Override
-    public boolean remove_Brand(String brand_Id) {
+    public boolean remove_Brand(int brand_Id) {
         try {
             String sql = "DELETE Brands WHERE brand_Id=" + brand_Id;
 

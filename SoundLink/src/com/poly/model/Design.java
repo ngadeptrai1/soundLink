@@ -2,20 +2,21 @@ package com.poly.model;
 
 public class Design {
 
-    private String design_Id, name, description;
+    private String  name, description;
     private boolean activated;
+    private int design_Id;
 
     public Design() {
     }
 
-    public Design(String design_Id, String name, String description, boolean activated) {
+    public Design(int design_Id, String name, String description, boolean activated) {
         this.design_Id = design_Id;
         this.name = name;
         this.description = description;
         this.activated = activated;
     }
 
-    public String getDesign_Id() {
+    public int getDesign_Id() {
         return design_Id;
     }
 
