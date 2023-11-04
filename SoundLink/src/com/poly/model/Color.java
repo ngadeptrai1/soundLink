@@ -1,34 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.poly.model;
 
-/**
- *
- * @author dnha1
- */
 public class Color {
 
-    private Integer id;
-    private String color;
-    private String status;
+    private String color_Id, color, status;
 
     public Color() {
     }
 
-    public Color(int id, String color, String status) {
-        this.id = id;
+    public Color(String color_Id, String color, String status) {
+        this.color_Id = color_Id;
         this.color = color;
         this.status = status;
     }
 
-    public int getId() {
-        return id;
+    public String getColor_Id() {
+        return color_Id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setColor_Id(String color_Id) {
+        this.color_Id = color_Id;
     }
 
     public String getColor() {
@@ -43,16 +33,20 @@ public class Color {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatus(boolean status) {
+        if (status) {
+            this.status = "Còn Hàng";
+        } else {
+            this.status = "Hết Hàng";
+        }
     }
 
-    @Override
-    public String toString() {
-        return "Colors{"
-                + "id=" + id
-                + ", color='" + color + '\''
-                + ", status='" + status + '\''
-                + '}';
+    public Object[] findAll() {
+        return new Object[]{
+            this.color_Id,
+            this.color_Id,
+            this.status
+        };
     }
+
 }

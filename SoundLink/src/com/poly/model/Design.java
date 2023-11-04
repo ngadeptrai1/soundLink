@@ -1,31 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.poly.model;
 
-/**
- *
- * @author dnha1
- */
 public class Design {
 
-    private Integer id;
-    private String name;
-    private String description;
+    private String design_Id, name, description;
+    private boolean activated;
 
-    public Design(Integer id, String name, String description) {
-        this.id = id;
+    public Design() {
+    }
+
+    public Design(String design_Id, String name, String description, boolean activated) {
+        this.design_Id = design_Id;
         this.name = name;
         this.description = description;
+        this.activated = activated;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public String getDesign_Id() {
+        return design_Id;
     }
 
     public String getName() {
@@ -42,6 +33,27 @@ public class Design {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getActivated() {
+        if (activated) {
+            return "Hoạt Động";
+        } else {
+            return "Không Hoạt Động";
+        }
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
+
+    public Object[] findAll() {
+        return new Object[]{
+            this.design_Id,
+            this.name,
+            this.description,
+            this.getActivated()
+        };
     }
 
 }

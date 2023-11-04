@@ -1,47 +1,65 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.poly.model;
 
-/**
- *
- * @author dnha1
- */
 public class Category {
 
-    private Integer id;
-    private String name;
-    private String description;
+    private String Categories_Id, Name, Describe, Updated_Time;
+    private int Updated_Person_Id;
 
-    public Category(Integer id, String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
+    public Category() {
     }
 
-    public Integer getId() {
-        return id;
+    public Category(String Categories_Id, String Name, String Describe, String Updated_Time, int Updated_Person_Id) {
+        this.Categories_Id = Categories_Id;
+        this.Name = Name;
+        this.Describe = Describe;
+        this.Updated_Time = Updated_Time;
+        this.Updated_Person_Id = Updated_Person_Id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public String getCategories_Id() {
+        return Categories_Id;
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String Name) {
+        this.Name = Name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDescribe() {
+        return Describe;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescribe(String Describe) {
+        this.Describe = Describe;
+    }
+
+    public String getUpdated_Time() {
+        return Updated_Time;
+    }
+
+    public void setUpdated_Time(String Updated_Time) {
+        this.Updated_Time = Updated_Time;
+    }
+
+    public int getUpdated_Person_Id() {
+        return Updated_Person_Id;
+    }
+
+    public void setUpdated_Person_Id(int Updated_Person_Id) {
+        this.Updated_Person_Id = Updated_Person_Id;
+    }
+
+    public Object[] findAll() {
+        return new Object[]{
+            this.Categories_Id,
+            this.Name,
+            this.Describe,
+            this.Updated_Time,
+            this.Updated_Person_Id
+        };
     }
 
 }
