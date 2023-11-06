@@ -35,7 +35,7 @@ CREATE TABLE [dbo].[Color]
 (
     [Color_Id] [INT] IDENTITY(1,1) NOT NULL,
     [Color] [NVARCHAR](30) NOT NULL,
-    [Status] [NVARCHAR](30) NOT NULL,
+   [Activated] [BIT],
     PRIMARY KEY CLUSTERED 
 (
 	[Color_Id] ASC
@@ -43,7 +43,7 @@ CREATE TABLE [dbo].[Color]
 ) ON [PRIMARY]
 
 
-
+alter table color drop column Status 
 
 GO
 SET ANSI_NULLS ON
@@ -76,8 +76,8 @@ CREATE TABLE [dbo].[Type_Product]
     [Type_Product_Id] [INT] IDENTITY(1,1) NOT NULL,
     [Name] [NVARCHAR](50),
     [Description] [NVARCHAR](100) NOT NULL,
-    [Update_Day] [DATE] NOT NULL,
-    [Quantity] [INT] NOT NULL,
+    [Created_Time] [DATE] NOT NULL,
+  
     PRIMARY KEY CLUSTERED 
 (
 	[Type_Product_Id] ASC
@@ -155,8 +155,7 @@ CREATE TABLE [dbo].[Category]
     [Categories_Id] [INT] IDENTITY(1,1) NOT NULL,
     [Name] [NVARCHAR](50) NOT NULL,
     [Describe] [NVARCHAR](100) NOT NULL,
-    [Updated_Time] [DATE] NOT NULL,
-    [Updated_Person_Id] [INT] NOT NULL,
+    [Created_Date] [DATE] NOT NULL,
     PRIMARY KEY CLUSTERED 
 (
 	[Categories_Id] ASC

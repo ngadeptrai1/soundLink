@@ -1,8 +1,9 @@
-package com.poly.DAO;
+package com.poy.service.Impl;
 
-import com.poly.Interface.Interface_Design;
+import com.poy.service.DBConnect;
 import com.poly.model.Design;
-import com.poly.DBConnect.DBConnect;
+import com.poy.service.CRUDService;
+import com.poy.service.DBConnect;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,18 +11,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import com.poy.service.DesignService;
 
-public class DAO_Design implements Interface_Design {
+public class DesignServiceImpl implements CRUDService<Design> {
 
     Connection con = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
 
     @Override
-    public List<Design> list_Design() {
+    public List<Design> findAll() {
         ArrayList<Design> listDesign = new ArrayList<>();
         try {
-            String sql = "SELECT Design_Id, Name, Description, Activated FROM DESIGN";
+            String sql = "SELECT Design_Id, Name, Description, Activated FROM DESIGNS";
             con = DBConnect.getConnection();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -39,65 +41,62 @@ public class DAO_Design implements Interface_Design {
             ps.close();
             con.close();
             System.out.println("Lấy Dữ Liệu Thành Công");
-        } catch (SQLException e) {
-            System.out.println("Lỗi Lấy Dữ Liệu: \n" + e.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("Lỗi Lấy Dữ Liệu: \n" + ex.getMessage());
         }
         return listDesign;
     }
 
     @Override
-    public int add_Design(Design o) {
-        int checkInput = checkInput(o);
-        if (checkInput != 0) {
-            return checkInput;
-        }
-        try {
+    public int create(Design o){
+        int ind = 0;
+                try {
             String sql = "INSERT INTO DESIGN (Name, Description, Activated) VALUES (?, ?, ?)";
             con = DBConnect.getConnection();
             ps = con.prepareStatement(sql);
 
             ps.setString(1, o.getName());
             ps.setString(2, o.getDescription());
-            ps.setString(3, o.getActivated());
-            ps.executeUpdate();
+            ps.setInt(3, o.isActivated() ? 1:0);
+          ind =  ps.executeUpdate();
 
             con.close();
             ps.close();
 
             System.out.println("Thêm Dữ Liệu Thành Công");
-            return 0;
+            return ind;
         } catch (SQLException e) {
             System.out.println("Lỗi Nhập Dữ Liệu: \n" + e.getMessage());
-            return 4;
-        }
+        
+        }  
+                return ind;
     }
 
     @Override
-    public boolean remove_Design(int design_Id) {
+    public int remove(String id) {
+        int ind = 0;
         try {
-            String sql = "DELETE FROM DESIGN WHERE Design_Id = " + design_Id;
+            String sql = "DELETE FROM DESIGN WHERE Design_Id = ? ";
 
             con = DBConnect.getConnection();
             ps = con.prepareStatement(sql);
-
-            ps.executeUpdate();
+            ps.setString(1, id);
+           ind = ps.executeUpdate();
 
             ps.close();
             con.close();
             System.out.println("Xóa Thành Công");
-            return true;
+            return ind;
         } catch (SQLException e) {
             System.out.println("Xóa Thất Bại: \n" + e.getMessage());
-            return false;
+           
         }
+        return ind;
     }
 
     @Override
-    public int update_Design(Design o) {
-        int checkInput = checkInput(o);
-        if (checkInput != 0) {
-            return checkInput;
-        }
+    public int  update(Design o) {
+        int ind =0;
         try {
             String sql = "UPDATE DESIGN SET Name=?, Description=?, Activated=? WHERE Design_Id = ?";
             con = DBConnect.getConnection();
@@ -105,29 +104,22 @@ public class DAO_Design implements Interface_Design {
 
             ps.setString(1, o.getName());
             ps.setString(2, o.getDescription());
-            ps.setString(3, o.getActivated());
-            ps.setInt(4, o.getDesign_Id());
+            ps.setInt(3, o.isActivated() ? 1: 0);
+            ps.setInt(4, o.getId());
 
-            ps.executeUpdate();
+           ind= ps.executeUpdate();
 
             con.close();
             ps.close();
 
             System.out.println("Sửa Dữ Liệu Thành Công");
-            return 0;
+            return ind;
         } catch (SQLException e) {
             System.out.println("Lỗi Nhập Dữ Liệu: \n" + e.getMessage());
-            return 4;
+            return ind;
         }
     }
 
-    private int checkInput(Design o) {
-        if (o.getName().isEmpty()) {
-            return 1;
-        }
-        if (o.getDescription().isEmpty()) {
-            return 2;
-        }
-        return 0;
-    }
+   
+
 }

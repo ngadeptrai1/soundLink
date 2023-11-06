@@ -1,16 +1,10 @@
-package com.poly.Interface;
+package com.poy.service;
 
 import java.util.List;
-import com.poly.model.Type_Product;
+import com.poly.model.TypeProduct;
 
-public interface Interface_TypeProduct {
+public interface TypeProductService {
 
-    public List<Type_Product> list_TypeProduct();
-
-    public int add_TypeProduct(Type_Product o);
-
-    public boolean remove_TypeProduct(int ID);
-
-    public int update_TypeProduct(Type_Product o);
+  
 
 }

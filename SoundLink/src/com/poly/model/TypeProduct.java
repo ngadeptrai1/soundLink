@@ -1,23 +1,21 @@
 package com.poly.model;
 
-public class Type_Product {
+import java.util.Date;
 
-    private String name, description, update_Day;
-    private int type_Product_Id, quantity;
+public class TypeProduct {
+    private Integer Id;
+    private String name, description ;
+    private Date createdTime;
 
-    public Type_Product() {
+    public TypeProduct() {
     }
 
-    public Type_Product(int type_Product_Id, String name, String description, String update_Day, int quantity) {
-        this.type_Product_Id = type_Product_Id;
-        this.name = name;
-        this.description = description;
-        this.update_Day = update_Day;
-        this.quantity = quantity;
+    public Integer getId() {
+        return Id;
     }
 
-    public int getType_Product_Id() {
-        return type_Product_Id;
+    public void setId(Integer Id) {
+        this.Id = Id;
     }
 
     public String getName() {
@@ -36,30 +34,22 @@ public class Type_Product {
         this.description = description;
     }
 
-    public String getUpdate_Day() {
-        return update_Day;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
-    public void setUpdate_Day(String update_Day) {
-        this.update_Day = update_Day;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public TypeProduct(Integer Id, String name, String description, Date createdTime) {
+        this.Id = Id;
+        this.name = name;
+        this.description = description;
+        this.createdTime = createdTime;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+    
 
-    public Object[] findAll() {
-        return new Object[]{
-            this.type_Product_Id,
-            this.name,
-            this.description,
-            this.update_Day,
-            this.quantity
-        };
-    }
-
+  
 }

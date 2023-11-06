@@ -1,23 +1,13 @@
 package com.poly.model;
 
+import java.util.Date;
+
 public class Category {
-
-    private String Name, Describe, Updated_Time;
-    private int Categories_Id, Updated_Person_Id;
-
+  private Integer Id;
+    private String Name, Describe;
+  
+private Date CreatedTime;
     public Category() {
-    }
-
-    public Category(int Categories_Id, String Name, String Describe, String Updated_Time, int Updated_Person_Id) {
-        this.Categories_Id = Categories_Id;
-        this.Name = Name;
-        this.Describe = Describe;
-        this.Updated_Time = Updated_Time;
-        this.Updated_Person_Id = Updated_Person_Id;
-    }
-
-    public int getCategories_Id() {
-        return Categories_Id;
     }
 
     public String getName() {
@@ -36,30 +26,31 @@ public class Category {
         this.Describe = Describe;
     }
 
-    public String getUpdated_Time() {
-        return Updated_Time;
+    public Integer getId() {
+        return Id;
     }
 
-    public void setUpdated_Time(String Updated_Time) {
-        this.Updated_Time = Updated_Time;
+    public void setId(Integer Id) {
+        this.Id = Id;
     }
 
-    public int getUpdated_Person_Id() {
-        return Updated_Person_Id;
+    public Date getCreatedTime() {
+        return CreatedTime;
     }
 
-    public void setUpdated_Person_Id(int Updated_Person_Id) {
-        this.Updated_Person_Id = Updated_Person_Id;
+    public void setCreatedTime(Date CreatedTime) {
+        this.CreatedTime = CreatedTime;
     }
 
-    public Object[] findAll() {
-        return new Object[]{
-            this.Categories_Id,
-            this.Name,
-            this.Describe,
-            this.Updated_Time,
-            this.Updated_Person_Id
-        };
+    public Category(Integer Id, String Name, String Describe, Date CreatedTime) {
+        this.Id = Id;
+        this.Name = Name;
+        this.Describe = Describe;
+        this.CreatedTime = CreatedTime;
     }
 
+   
+
+   
+   
 }

@@ -1,15 +1,9 @@
-package com.poly.Interface;
+package com.poy.service;
 
 import java.util.List;
 import com.poly.model.Design;
 
-public interface Interface_Design {
+public interface DesignService {
 
-    public List<Design> list_Design();
-
-    public int add_Design(Design o);
-
-    public boolean remove_Design(int design_Id);
-
-    public int update_Design(Design o);
+  
 }

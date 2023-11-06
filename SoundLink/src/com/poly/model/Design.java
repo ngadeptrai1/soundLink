@@ -1,23 +1,27 @@
 package com.poly.model;
 
 public class Design {
-
+ private Integer Id;
     private String  name, description;
     private boolean activated;
-    private int design_Id;
+   
 
     public Design() {
     }
 
-    public Design(int design_Id, String name, String description, boolean activated) {
-        this.design_Id = design_Id;
+    public Design(Integer Id, String name, String description, boolean activated) {
+        this.Id = Id;
         this.name = name;
         this.description = description;
         this.activated = activated;
     }
 
-    public int getDesign_Id() {
-        return design_Id;
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int Id) {
+        this.Id = Id;
     }
 
     public String getName() {
@@ -36,25 +40,15 @@ public class Design {
         this.description = description;
     }
 
-    public String getActivated() {
-        if (activated) {
-            return "Hoạt Động";
-        } else {
-            return "Không Hoạt Động";
-        }
+    public boolean isActivated() {
+        return activated;
     }
 
     public void setActivated(boolean activated) {
         this.activated = activated;
     }
 
-    public Object[] findAll() {
-        return new Object[]{
-            this.design_Id,
-            this.name,
-            this.description,
-            this.getActivated()
-        };
-    }
+  
+   
 
 }

@@ -1,40 +1,39 @@
 package com.poly.model;
 
-public class Brands {
+import java.util.Date;
 
-    private int brand_Id;
-    private String brand_Name, date_Created, description;
+public class Brand {
+
+    private Integer Id;
+    private String brandName,description;
+    private Date dateCreated ;
     private boolean activated;
 
-    public Brands() {
+    public Brand() {
     }
 
-    public Brands(int brand_Id, String brand_Name, String date_Created, String description, boolean activated) {
-        this.brand_Id = brand_Id;
-        this.brand_Name = brand_Name;
-        this.date_Created = date_Created;
+    public Brand(Integer Id, String brandName, String description, Date dateCreated, boolean activated) {
+        this.Id = Id;
+        this.brandName = brandName;
         this.description = description;
+        this.dateCreated = dateCreated;
         this.activated = activated;
     }
 
-    public int getBrand_Id() {
-        return brand_Id;
+    public Integer getId() {
+        return Id;
     }
 
-    public String getBrand_Name() {
-        return brand_Name;
+    public void setId(Integer Id) {
+        this.Id = Id;
     }
 
-    public void setBrand_Name(String brand_Name) {
-        this.brand_Name = brand_Name;
+    public String getBrandName() {
+        return brandName;
     }
 
-    public String getDate_Created() {
-        return date_Created;
-    }
-
-    public void setDate_Created(String date_Created) {
-        this.date_Created = date_Created;
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 
     public String getDescription() {
@@ -45,6 +44,14 @@ public class Brands {
         this.description = description;
     }
 
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
     public boolean isActivated() {
         return activated;
     }
@@ -53,16 +60,11 @@ public class Brands {
         this.activated = activated;
     }
 
-    public Object[] findAll() {
-        return new Object[]{
-            this.brand_Id,
-            this.brand_Name,
-            this.date_Created,
-            this.description,
-            this.activated
-        };
+    @Override
+    public String toString() {
+        return "Brand{" + "Id=" + Id + ", brandName=" + brandName + ", description=" + description + ", dateCreated=" + dateCreated + ", activated=" + activated + '}';
     }
-    public static void main(String[] args) {
-        
-    }
+
+    
+   
 }

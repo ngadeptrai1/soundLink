@@ -1,15 +1,9 @@
-package com.poly.Interface;
+package com.poy.service;
 
 import java.util.List;
-import com.poly.model.Brands;
+import com.poly.model.Brand;
 
-public interface Interface_Brands {
+public interface BrandService {
 
-    public List<Brands> list_Brand();
 
-    public int add_Brand(Brands o);
-
-    public boolean remove_Brand(int brand_Id);
-
-    public int update_Brand(Brands o);
 }
