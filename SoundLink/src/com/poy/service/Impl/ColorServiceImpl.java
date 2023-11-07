@@ -1,6 +1,5 @@
 package com.poy.service.Impl;
 
-import com.poy.service.DBConnect;
 import com.poly.model.Color;
 import com.poy.service.CRUDService;
 import com.poy.service.DBConnect;
@@ -11,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import com.poy.service.ColorService;
 
 public class ColorServiceImpl implements CRUDService<Color> {
 
@@ -20,66 +18,71 @@ public class ColorServiceImpl implements CRUDService<Color> {
     ResultSet rs = null;
 
     @Override
-    public  List<Color> findAll() {
+    public List<Color> findAll(int pageNums,String text) {
         ArrayList<Color> listColor = new ArrayList<>();
         try {
-            String sql = "SELECT Color_Id, Color, Activated FROM COLOR";
-            con = DBConnect.getConnection();
+            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM Colors WHERE NAME LIKE ? ORDER BY ID OFFSET ? ROWS FETCH FIRST 5 ROWS ONLY";
+            con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
+            ps.setString(1, "%'"+text+"'%");
+   ps.setInt(2, pageNums*5);
             rs = ps.executeQuery();
+            
             while (rs.next()) {
-                Color color = new Color(
-                        rs.getInt("Color_Id"),
-                        rs.getString("Color"),
-                        rs.getBoolean("Activated")
-                );
-                listColor.add(color);
-                System.out.println(rs.getString("Color_Id"));
+                listColor.add(new Color(rs.getInt("Id"), rs.getString("Name"),
+                        rs.getString("Description"),
+                        rs.getDate("Date_Created"),
+                        rs.getBoolean("Activated")));
             }
             rs.close();
             ps.close();
             con.close();
-            System.out.println("Lấy Dữ Liệu Thành Công");
-        } catch (SQLException ex) {
-            System.out.println("Lỗi Lấy Dữ Liệu: \n" + ex.getMessage());
+            System.out.println("Lẫy Dữ Liệu Thành Công");
+        } catch (SQLException e) {
+            System.out.println("Lỗi Lấy Dữ Liệu: \n" + e.getMessage());
         }
         return listColor;
     }
 
     @Override
-    public int create(Color e) {
+    public int create(Object[] o) {
         int ind = -1;
         try {
-            String sql = "INSERT INTO COLOR (Color, Activated) VALUES (?, ?)";
-            con = DBConnect.getConnection();
+            String sql = "INSERT INTO Colors\n"
+                    + "    (Name, Date_Created, Description, Activated)\n"
+                    + "VALUES(?,?,?,?)";
+            con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
 
-            ps.setString(1, e.getColor());
-            ps.setInt(2, e.isActivated() ? 1:0);
+            ps.setString(1, o[0].toString());
+            ps.setDate(2, new java.sql.Date(System.currentTimeMillis()));
+            ps.setString(3, o[1].toString());
+            ps.setInt(4,(boolean) o[2] ? 1 : 0);
             ind = ps.executeUpdate();
 
             con.close();
             ps.close();
 
             System.out.println("Thêm Dữ Liệu Thành Công");
+
             return ind;
-        } catch (SQLException ex) {
-            System.out.println("Lỗi Nhập Dữ Liệu: \n" + ex.getMessage());
-           
+        } catch (SQLException e) {
+            System.out.println("Lỗi Nhập Dữ Liệu: \n" + e.getMessage());
+            return ind;
         }
-        return ind;
     }
 
     @Override
     public int remove(String id) {
-        int ind = 0;
+        int ind = -1;
         try {
-            String sql = "DELETE FROM COLOR WHERE Color_Id = ? ";
+            String sql = "DELETE Colors WHERE Id= ? ";
 
-            con = DBConnect.getConnection();
+            con = com.poy.service.DBConnect.getConnection();
+
             ps = con.prepareStatement(sql);
             ps.setString(1, id);
-           ind = ps.executeUpdate();
+            ind = ps.executeUpdate();
 
             ps.close();
             con.close();
@@ -87,24 +90,23 @@ public class ColorServiceImpl implements CRUDService<Color> {
             return ind;
         } catch (SQLException e) {
             System.out.println("Xóa Thất Bại: \n" + e.getMessage());
-           
-        } 
+
+        }
         return ind;
     }
 
     @Override
-    public int update(Color o) {
-        int ind = 0;
+    public int update(Object[] o) {
+        int ind = -1;
         try {
-            String sql = "UPDATE COLOR SET Color=?, Activated = ? WHERE Color_Id = ?";
-            con = DBConnect.getConnection();
+            String sql = "UPDATE Colors SET Name=?,Description=?,Activated=? WHERE Id=?";
+            con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
-
-            ps.setString(1, o.getColor());
-            ps.setInt(2, o.isActivated() ? 1 : 0 );
-            ps.setInt(3, o.getId());
-
-          ind =  ps.executeUpdate();
+            ps.setString(1, o[1].toString());
+            ps.setString(2, o[2].toString());
+            ps.setString(3, o[4].toString());
+            ps.setInt(4,(int) o[0]);
+            ind = ps.executeUpdate();
 
             con.close();
             ps.close();
@@ -113,10 +115,30 @@ public class ColorServiceImpl implements CRUDService<Color> {
             return ind;
         } catch (SQLException e) {
             System.out.println("Lỗi Nhập Dữ Liệu: \n" + e.getMessage());
-           
-        } 
+
+        }
         return ind;
     }
+@Override
+    public int getTotalPage(String text) {
+         int total = -1;
+        try {
+            String sql = "SELECT COUNT(*) FROM Colors WHERE NAME LIKE ?";
+            con = com.poy.service.DBConnect.getConnection();
+            ps = con.prepareStatement(sql);
+             ps.setString(1, "%'"+text+"'%");
+            rs = ps.executeQuery();
+            while (rs.next()) {                
+                  total = rs.getInt(1);
+            }
+            con.close();
+            ps.close();
+            System.out.println("lấy số luowngjthanhf cong");
+            return total;
+        } catch (SQLException e) {
+            System.out.println("Lỗi Nhập Dữ Liệu: \n" + e.getMessage());
 
-
+        }
+        return 0;
+    }
 }

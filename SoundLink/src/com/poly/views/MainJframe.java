@@ -4,6 +4,8 @@ import com.poly.model.Brand;
 import com.poly.model.Category;
 import com.poly.model.Color;
 import com.poly.model.Design;
+import com.poly.model.FrequencyRange;
+import com.poly.model.TotalPower;
 import com.poy.service.Impl.TypeProductServiceImpl;
 import com.poly.model.TypeProduct;
 import com.poy.service.CRUDService;
@@ -11,8 +13,11 @@ import com.poy.service.Impl.BrandServiceImpl;
 import com.poy.service.Impl.CategoryServiceImpl;
 import com.poy.service.Impl.ColorServiceImpl;
 import com.poy.service.Impl.DesignServiceImpl;
+import com.poy.service.Impl.FrequencyRangeImpl;
+import com.poy.service.Impl.TotalPowerImpl;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,138 +26,144 @@ public class MainJframe extends javax.swing.JFrame {
     private int ind = -1;
     DefaultTableModel model = new DefaultTableModel();
     private CRUDService crud;
-    SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyys");
+    SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
     private String curenttAttr;
-    private Brand brandData = null;
-    private Color colorData = null;
-    private Design degisData = null;
-    private TypeProduct typeData = null;
-    private Category cateData = null;
+    private List<Object[]> currentList = null;
+    private int totalPage;
+    private int currentPage = 0;
 
     public MainJframe() {
         initComponents();
         setLocationRelativeTo(null);
+        this.setTitle("Sound Link");
         checkRdo();
+        setTotalPage();
+        fillToTable();
+        setText();
+    }
+    
+    void setText(){
+    lblPage.setText("Trang số "+ (currentPage+1) + " Trên " + totalPage);
+    }
+    
+    void setTotalPage() {
+        if (crud.getTotalPage(txtSearch.getText()) > 5) {
+            totalPage = crud.getTotalPage(txtSearch.getText())/5;
+            if (crud.getTotalPage(txtSearch.getText()) % 5 != 0) {
+                 totalPage ++;
+            } 
+        } else {
+            totalPage = 1;
+        }
+
     }
 
-    void showData() {
+    void convertListBrandToList(List<Brand> list) {
+        currentList = list.stream()
+                .map(item -> new Object[]{item.getId(), item.getName(), item.getDescription(), item.getDateCreated(), item.isActivated()})
+                .collect(Collectors.toList());
+    }
+
+    void convertListCateToList(List<Category> list) {
+        currentList = list.stream()
+                .map(item -> new Object[]{item.getId(), item.getName(), item.getDescription(), item.getDateCreated(), item.isActivated()})
+                .collect(Collectors.toList());
+    }
+
+    void convertListColorToList(List<Color> list) {
+        currentList = list.stream()
+                .map(item -> new Object[]{item.getId(), item.getName(), item.getDescription(), item.getDateCreated(), item.isActivated()})
+                .collect(Collectors.toList());
+    }
+
+    void convertListDesignToList(List<Design> list) {
+        currentList = list.stream()
+                .map(item -> new Object[]{item.getId(), item.getName(), item.getDescription(), item.getDateCreated(), item.isActivated()})
+                .collect(Collectors.toList());
+    }
+
+    void convertListTypeToList(List<TypeProduct> list) {
+        currentList = list.stream()
+                .map(item -> new Object[]{item.getId(), item.getName(), item.getDescription(), item.getDateCreated(), item.isActivated()})
+                .collect(Collectors.toList());
+    }
+
+    void convertListFreToList(List<FrequencyRange> list) {
+        currentList = list.stream()
+                .map(item -> new Object[]{item.getId(), item.getName(), item.getDescription(), item.getDateCreated(), item.isActivated()})
+                .collect(Collectors.toList());
+    }
+
+    void convertListTotalPowerToList(List<TotalPower> list) {
+        currentList = list.stream()
+                .map(item -> new Object[]{item.getId(), item.getName(), item.getDescription(), item.getDateCreated(), item.isActivated()})
+                .collect(Collectors.toList());
+    }
+
+    void fillToTable() {
+        model = (DefaultTableModel) tblList.getModel();
+        model.setRowCount(0);
+        for (Object[] p : currentList) {
+            model.addRow(new Object[]{
+                p[1], p[2], p[3] ,(boolean)p[4] ? "Đang hoạt động" : "Ngừng"
+            });
+        }
+    }
+
+    void showData(int ind) {
         checkRdo();
-        if (curenttAttr.equals("BR")) {
-            brandData = (Brand) crud.findAll().get(ind);
-            txtDes.setText(brandData.getDescription());
-            txtName.setText(brandData.getBrandName());
-            chkActivated.setSelected(brandData.isActivated());
-        }
-        if (curenttAttr.equals("COLOR")) {
-            colorData = (Color) crud.findAll().get(ind);
-            txtDes.setText("");
-            txtName.setText(colorData.getColor());
-            chkActivated.setSelected(colorData.isActivated());
-        }
-        if (curenttAttr.equals("DE")) {
-            degisData = (Design) crud.findAll().get(ind);
-            txtDes.setText(degisData.getDescription());
-            txtName.setText(degisData.getDescription());
-            chkActivated.setSelected(degisData.isActivated());
-        }
-        if (curenttAttr.equals("CATE")) {
-            cateData = (Category) crud.findAll().get(ind);
-            txtDes.setText(cateData.getDescribe());
-            txtName.setText(cateData.getName());
-            chkActivated.setSelected(false);
-        }
-        if (curenttAttr.equals("TYPE")) {
-            typeData = (TypeProduct) crud.findAll().get(ind);
-            txtDes.setText(typeData.getDescription());
-            txtName.setText(typeData.getName());
-            chkActivated.setSelected(false);
-        }
-    }
-
-    void fillToTableBrand(List<Brand> list) {
-        model = (DefaultTableModel) tblList.getModel();
-        model.setRowCount(0);
-        for (Brand p : list) {
-            model.addRow(new Object[]{p.getBrandName(), p.getDescription(), fmt.format(p.getDateCreated())});
-        }
-    }
-
-    void fillToTableDesign(List<Design> list) {
-        model = (DefaultTableModel) tblList.getModel();
-        model.setRowCount(0);
-        for (Design p : list) {
-            model.addRow(new Object[]{p.getName(), p.getDescription(), " "});
-        }
-    }
-
-    void fillToTableTypeProduct(List<TypeProduct> list) {
-        model = (DefaultTableModel) tblList.getModel();
-        model.setRowCount(0);
-        for (TypeProduct p : list) {
-            model.addRow(new Object[]{p.getName(), p.getDescription(), fmt.format(p.getCreatedTime())});
-        }
-    }
-
-    void fillToTableColor(List<Color> list) {
-        model = (DefaultTableModel) tblList.getModel();
-        model.setRowCount(0);
-        for (Color p : list) {
-            model.addRow(new Object[]{p.getColor(), "", ""});
-        }
-    }
-
-    void fillToTableCate(List<Category> list) {
-        model = (DefaultTableModel) tblList.getModel();
-        model.setRowCount(0);
-        for (Category p : list) {
-            model.addRow(new Object[]{p.getName(), p.getDescribe(), fmt.format(p.getCreatedTime())});
-        }
+        Object[] item = currentList.get(ind);
+        txtName.setText(item[1].toString());
+        txtDes.setText(item[2].toString());
+        chkActivated.setSelected((boolean) item[4]);
     }
 
     void checkRdo() {
         if (rdoBrand.isSelected()) {
             crud = new BrandServiceImpl();
+            convertListBrandToList(crud.findAll(currentPage,txtSearch.getText()));
             curenttAttr = "BR";
-            fillToTableBrand(crud.findAll());
         }
         if (rdoCate.isSelected()) {
             crud = new CategoryServiceImpl();
             curenttAttr = "CATE";
-            fillToTableCate(crud.findAll());
+            convertListCateToList(crud.findAll(currentPage,txtSearch.getText()));
         }
         if (rdoColor.isSelected()) {
             crud = new ColorServiceImpl();
             curenttAttr = "COLOR";
-            fillToTableColor(crud.findAll());
+            convertListColorToList(crud.findAll(currentPage,txtSearch.getText()));
         }
         if (rdoDesign.isSelected()) {
             crud = new DesignServiceImpl();
             curenttAttr = "DE";
-            fillToTableDesign(crud.findAll());
+            convertListDesignToList(crud.findAll(currentPage,txtSearch.getText()));
         }
         if (rdoType.isSelected()) {
             crud = new TypeProductServiceImpl();
             curenttAttr = "TYPE";
-            fillToTableTypeProduct(crud.findAll());
+            convertListTypeToList(crud.findAll(currentPage,txtSearch.getText()));
+        }
+        if (rdoPower.isSelected()) {
+            crud = new TotalPowerImpl();
+            curenttAttr = "TOTAL";
+            convertListTotalPowerToList(crud.findAll(currentPage,txtSearch.getText()));
+        }
+        if (rdoFrequency.isSelected()) {
+            crud = new FrequencyRangeImpl();
+            curenttAttr = "FRE";
+            convertListFreToList(crud.findAll(currentPage,txtSearch.getText()));
         }
     }
-
-    void checkAdd() {
-        if (curenttAttr.equals("BR")) {
-            brandData = new Brand(null, txtName.getText(), txtDes.getText(), null, chkActivated.isSelected());
-        }
-        if (curenttAttr.equals("COLOR")) {
-            colorData = new Color(null, txtName.getText(), chkActivated.isSelected());
-        }
-        if (curenttAttr.equals("DE")) {
-            degisData = new Design(null, txtName.getText(), txtDes.getText(), chkActivated.isSelected());
-        }
-        if (curenttAttr.equals("CATE")) {
-            cateData = new Category(null, txtName.getText(), txtDes.getText(), null);
-        }
-        if (curenttAttr.equals("TYPE")) {
-            typeData = new TypeProduct(null, txtName.getText(), txtDes.getText(), null);
-        }
+    
+    
+    
+    private Object[] getData() {
+        return new Object[]{
+            txtName.getText(),
+            txtDes.getText(),
+            chkActivated.isSelected()
+        };
     }
 
     void add() {
@@ -161,110 +172,42 @@ public class MainJframe extends javax.swing.JFrame {
         } else {
             int flag = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn thêm");
             checkRdo();
-            checkAdd();
             if (flag == 0) {
-                if (curenttAttr.equals("BR")) {
-                    crud.create(brandData);
-                    fillToTableBrand(crud.findAll());
+                int quantity = crud.create(getData());
+                if (quantity > 0) {
+                    JOptionPane.showMessageDialog(this, "Thêm thành công");
+                    ind = -1;
+                } else {
+                    JOptionPane.showMessageDialog(this, "Thêm không thành công");
                 }
-                if (curenttAttr.equals("COLOR")) {
-                    crud.create(colorData);
-                    fillToTableColor(crud.findAll());
-                }
-                if (curenttAttr.equals("DE")) {
-                    crud.create(degisData);
-                    fillToTableDesign(crud.findAll());
-                }
-                if (curenttAttr.equals("CATE")) {
-                    crud.create(cateData);
-                    fillToTableCate(crud.findAll());
-                }
-                if (curenttAttr.equals("TYPE")) {
-                    crud.create(typeData);
-                    fillToTableTypeProduct(crud.findAll());
-                }
+                ind = -1;
             }
         }
 
     }
 
     void update() {
-        if(ind <0){
-            JOptionPane.showMessageDialog(this,"Bạn chưa chọn bảng nào ");
-        }else
-        if (txtName.getText().equalsIgnoreCase("")) {
+        if (ind < 0) {
+            JOptionPane.showMessageDialog(this, "Bạn chưa chọn bảng nào ");
+        } else if (txtName.getText().equalsIgnoreCase("")) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập tên");
         } else {
             int flag = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn sửa ");
             checkRdo();
-            checkAdd();
             if (flag == 0) {
-                if (curenttAttr.equals("BR")) {
-                    brandData = (Brand) crud.findAll().get(ind);
-                    brandData.setBrandName(txtName.getText());
-                    brandData.setActivated(chkActivated.isSelected());
-                    brandData.setDescription(txtDes.getText());
-                    int record = crud.update(brandData);
-                    if (record > 0) {
-                        JOptionPane.showMessageDialog(this, "Sửa thành công ");
-                        fillToTableBrand(crud.findAll());
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Sửa thất bại  ");
-                    }
-                    fillToTableBrand(crud.findAll());
+                Object[] data = currentList.get(ind);
+                data[1] = txtName.getText();
+                data[2] = txtDes.getText();
+                data[4] = chkActivated.isSelected();
+
+                int quantity = crud.update(getData());
+                if (quantity > 0) {
+                    JOptionPane.showMessageDialog(this, "Cập nhật thành công");
+                    ind = -1;
+                } else {
+                    JOptionPane.showMessageDialog(this, "Cập nhật không thành công");
                 }
-                if (curenttAttr.equals("COLOR")) {
-                     colorData = (Color) crud.findAll().get(ind);
-                     colorData.setColor(txtName.getText());
-                     colorData.setActivated(chkActivated.isSelected());
-                    int record = crud.update(colorData.getId() + "");
-                    if (record > 0) {
-                        JOptionPane.showMessageDialog(this, "Sửa thành công ");
-                        fillToTableColor(crud.findAll());
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Sửa thất bại  ");
-                    }
-                    
-                }
-                if (curenttAttr.equals("DE")) {
-                    degisData = (Design) crud.findAll().get(ind);
-                    degisData.setActivated(chkActivated.isSelected());
-                    degisData.setName(txtName.getText());
-                    degisData.setDescription(txtDes.getText());
-                    int record = crud.update(degisData.getId() + "");
-                    if (record > 0) {
-                        JOptionPane.showMessageDialog(this, "Sửa thành công ");
-                        fillToTableDesign(crud.findAll());
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Sửa thất bại  ");
-                    }
-                }
-                if (curenttAttr.equals("CATE")) {
-                    cateData = (Category) crud.findAll().get(ind);
-                    cateData.setDescribe(txtDes.getText());
-                    cateData.setName(txtName.getText());
-                    
-                    int record = crud.update(cateData.getId() + "");
-                    if (record > 0) {
-                        JOptionPane.showMessageDialog(this, "Sửa thành công ");
-                        fillToTableCate(crud.findAll());
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Sửa thất bại  ");
-                    }
-                }
-                if (curenttAttr.equals("TYPE")) {
-                   typeData = (TypeProduct) crud.findAll().get(ind);
-                   typeData.setDescription(txtDes.getName());
-                   typeData.setName(txtName.getText());
-                  
-                    int record = crud.update(typeData.getId() + "");
-                    if (record > 0) {
-                        JOptionPane.showMessageDialog(this, "Sửa thành công ");
-                        fillToTableTypeProduct(crud.findAll());
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Sửa thất bại  ");
-                    }
-                }
+                ind = -1;
             }
         }
     }
@@ -274,56 +217,17 @@ public class MainJframe extends javax.swing.JFrame {
         checkRdo();
         if (ind > 0) {
             if (cf == 0) {
-                if (curenttAttr.equals("BR")) {
-                    brandData = (Brand) crud.findAll().get(ind);
-                    int record = crud.remove(brandData.getId() + "");
-                    if (record > 0) {
-                        JOptionPane.showMessageDialog(this, "Xóa thành công ");
-                        fillToTableBrand(crud.findAll());
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Xóa thất bại  ");
-                    }
+
+                int quantity = crud.remove(currentList.get(ind)[0].toString());
+                if (quantity > 0) {
+                    JOptionPane.showMessageDialog(this, "Xóa thành công ");
+                    ind = -1;
+                    fillToTable();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Xóa thất bại  ");
+                    ind = -1;
                 }
-                if (curenttAttr.equals("COLOR")) {
-                    colorData = (Color) crud.findAll().get(ind);
-                    int record = crud.remove(colorData.getId() + "");
-                    if (record > 0) {
-                        JOptionPane.showMessageDialog(this, "Xóa thành công ");
-                        fillToTableColor(crud.findAll());
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Xóa thất bại  ");
-                    }
-                }
-                if (curenttAttr.equals("DE")) {
-                    degisData = (Design) crud.findAll().get(ind);
-                    int record = crud.remove(degisData.getId() + "");
-                    if (record > 0) {
-                        JOptionPane.showMessageDialog(this, "Xóa thành công ");
-                        fillToTableDesign(crud.findAll());
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Xóa thất bại  ");
-                    }
-                }
-                if (curenttAttr.equals("CATE")) {
-                    cateData = (Category) crud.findAll().get(ind);
-                    int record = crud.remove(cateData.getId() + "");
-                    if (record > 0) {
-                        JOptionPane.showMessageDialog(this, "Xóa thành công ");
-                        fillToTableCate(crud.findAll());
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Xóa thất bại  ");
-                    }
-                }
-                if (curenttAttr.equals("TYPE")) {
-                    typeData = (TypeProduct) crud.findAll().get(ind);
-                    int record = crud.remove(typeData.getId() + "");
-                    if (record > 0) {
-                        JOptionPane.showMessageDialog(this, "Xóa thành công ");
-                        fillToTableTypeProduct(crud.findAll());
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Xóa thất bại  ");
-                    }
-                }
+
             }
         } else {
             JOptionPane.showMessageDialog(this, "Bạn chưa chọn dòng nào ");
@@ -377,23 +281,27 @@ public class MainJframe extends javax.swing.JFrame {
         rdoColor = new javax.swing.JRadioButton();
         rdoType = new javax.swing.JRadioButton();
         rdoDesign = new javax.swing.JRadioButton();
+        rdoPower = new javax.swing.JRadioButton();
+        rdoFrequency = new javax.swing.JRadioButton();
         jLabel5 = new javax.swing.JLabel();
-        txtName = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        txtDes = new javax.swing.JTextArea();
-        chkActivated = new javax.swing.JCheckBox();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        txtName = new javax.swing.JTextField();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        txtDes = new javax.swing.JTextArea();
+        chkActivated = new javax.swing.JCheckBox();
         jScrollPane6 = new javax.swing.JScrollPane();
         tblList = new javax.swing.JTable();
         jPanel29 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
-        btn_addProduct = new javax.swing.JButton();
-        btn_updateProduct = new javax.swing.JButton();
-        btn_removeProduct = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
+        txtSearch = new javax.swing.JTextField();
+        btnFirstPage = new javax.swing.JButton();
+        btnPrevPage = new javax.swing.JButton();
+        btnNextPage = new javax.swing.JButton();
+        btnLastPage = new javax.swing.JButton();
+        lblPage = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
@@ -890,6 +798,22 @@ public class MainJframe extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(rdoPower);
+        rdoPower.setText("Công Suất");
+        rdoPower.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoPowerActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(rdoFrequency);
+        rdoFrequency.setText("Tần Số");
+        rdoFrequency.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoFrequencyActionPerformed(evt);
+            }
+        });
+
         jLabel5.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 153, 0));
         jLabel5.setText("Tên thuộc tính : ");
@@ -897,12 +821,6 @@ public class MainJframe extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 153, 0));
         jLabel6.setText("Miêu tả : ");
-
-        txtDes.setColumns(20);
-        txtDes.setRows(5);
-        jScrollPane5.setViewportView(txtDes);
-
-        chkActivated.setText("Hoạt động");
 
         jButton2.setText("Thêm");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -925,6 +843,12 @@ public class MainJframe extends javax.swing.JFrame {
             }
         });
 
+        txtDes.setColumns(20);
+        txtDes.setRows(5);
+        jScrollPane5.setViewportView(txtDes);
+
+        chkActivated.setText("Hoạt động");
+
         javax.swing.GroupLayout jPanel28Layout = new javax.swing.GroupLayout(jPanel28);
         jPanel28.setLayout(jPanel28Layout);
         jPanel28Layout.setHorizontalGroup(
@@ -940,16 +864,20 @@ public class MainJframe extends javax.swing.JFrame {
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
                         .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rdoBrand)
-                            .addComponent(rdoCate))
-                        .addGap(120, 120, 120)
-                        .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rdoType)
                             .addGroup(jPanel28Layout.createSequentialGroup()
-                                .addComponent(rdoColor)
+                                .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(rdoBrand)
+                                    .addComponent(rdoCate))
+                                .addGap(120, 120, 120)
+                                .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(rdoColor)
+                                    .addComponent(rdoType))
                                 .addGap(52, 52, 52)
-                                .addComponent(rdoDesign)))
-                        .addGap(60, 60, 60))
+                                .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(rdoDesign)
+                                    .addComponent(rdoPower)))
+                            .addComponent(rdoFrequency))
+                        .addGap(38, 38, 38))
                     .addGroup(jPanel28Layout.createSequentialGroup()
                         .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -986,7 +914,10 @@ public class MainJframe extends javax.swing.JFrame {
                         .addGap(28, 28, 28)
                         .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(rdoCate)
-                            .addComponent(rdoType))))
+                            .addComponent(rdoType)
+                            .addComponent(rdoPower))
+                        .addGap(28, 28, 28)
+                        .addComponent(rdoFrequency)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
@@ -997,17 +928,17 @@ public class MainJframe extends javax.swing.JFrame {
 
         tblList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Tên", "Miêu tả", "Ngày tạo"
+                "Tên", "Miêu tả", "Ngày tạo", "Trạng thái"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -1024,10 +955,15 @@ public class MainJframe extends javax.swing.JFrame {
         jPanel29.setBackground(new java.awt.Color(204, 242, 236));
         jPanel29.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(255, 225, 160), new java.awt.Color(255, 153, 0)), "Tìm thuộc tính", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 12), new java.awt.Color(0, 102, 153))); // NOI18N
 
-        jButton3.setBackground(new java.awt.Color(153, 255, 153));
-        jButton3.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(204, 153, 0));
-        jButton3.setText("Tìm kiếm");
+        btnSearch.setBackground(new java.awt.Color(153, 255, 153));
+        btnSearch.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        btnSearch.setForeground(new java.awt.Color(204, 153, 0));
+        btnSearch.setText("Tìm kiếm");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel29Layout = new javax.swing.GroupLayout(jPanel29);
         jPanel29.setLayout(jPanel29Layout);
@@ -1035,9 +971,9 @@ public class MainJframe extends javax.swing.JFrame {
             jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel29Layout.createSequentialGroup()
                 .addGap(150, 150, 150)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
+                .addComponent(btnSearch)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel29Layout.setVerticalGroup(
@@ -1045,57 +981,69 @@ public class MainJframe extends javax.swing.JFrame {
             .addGroup(jPanel29Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch))
                 .addContainerGap(47, Short.MAX_VALUE))
         );
 
-        btn_addProduct.setText("Thêm");
-        btn_addProduct.addActionListener(new java.awt.event.ActionListener() {
+        btnFirstPage.setText("<<");
+        btnFirstPage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_addProductActionPerformed(evt);
+                btnFirstPageActionPerformed(evt);
             }
         });
 
-        btn_updateProduct.setText("Sửa");
-        btn_updateProduct.addActionListener(new java.awt.event.ActionListener() {
+        btnPrevPage.setText("<");
+        btnPrevPage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_updateProductActionPerformed(evt);
+                btnPrevPageActionPerformed(evt);
             }
         });
 
-        btn_removeProduct.setText("Xóa");
-        btn_removeProduct.addActionListener(new java.awt.event.ActionListener() {
+        btnNextPage.setText(">");
+        btnNextPage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_removeProductActionPerformed(evt);
+                btnNextPageActionPerformed(evt);
             }
         });
+
+        btnLastPage.setText(">>");
+        btnLastPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLastPageActionPerformed(evt);
+            }
+        });
+
+        lblPage.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        lblPage.setForeground(new java.awt.Color(255, 0, 0));
+        lblPage.setText("jLabel12");
 
         javax.swing.GroupLayout jPanel27Layout = new javax.swing.GroupLayout(jPanel27);
         jPanel27.setLayout(jPanel27Layout);
         jPanel27Layout.setHorizontalGroup(
             jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel27Layout.createSequentialGroup()
+                .addContainerGap(49, Short.MAX_VALUE)
+                .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(41, 41, 41))
+            .addGroup(jPanel27Layout.createSequentialGroup()
+                .addGap(303, 303, 303)
+                .addComponent(btnFirstPage, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnPrevPage, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(58, 58, 58)
+                .addComponent(lblPage)
+                .addGap(89, 89, 89)
+                .addComponent(btnNextPage, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnLastPage, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel27Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel27Layout.createSequentialGroup()
-                        .addComponent(jScrollPane6)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel27Layout.createSequentialGroup()
-                        .addGap(0, 21, Short.MAX_VALUE)
-                        .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel27Layout.createSequentialGroup()
-                                .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jPanel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jPanel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(41, 41, 41))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel27Layout.createSequentialGroup()
-                                .addComponent(btn_addProduct)
-                                .addGap(40, 40, 40)
-                                .addComponent(btn_updateProduct)
-                                .addGap(35, 35, 35)
-                                .addComponent(btn_removeProduct)
-                                .addContainerGap())))))
+                .addComponent(jScrollPane6)
+                .addContainerGap())
         );
         jPanel27Layout.setVerticalGroup(
             jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1104,14 +1052,16 @@ public class MainJframe extends javax.swing.JFrame {
                 .addComponent(jPanel28, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel29, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                 .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_addProduct)
-                    .addComponent(btn_updateProduct)
-                    .addComponent(btn_removeProduct))
-                .addContainerGap())
+                    .addComponent(btnFirstPage)
+                    .addComponent(btnPrevPage)
+                    .addComponent(btnNextPage)
+                    .addComponent(btnLastPage)
+                    .addComponent(lblPage))
+                .addGap(60, 60, 60))
         );
 
         jTabbedPane3.addTab("Thuộc tính", jPanel27);
@@ -1277,37 +1227,42 @@ public class MainJframe extends javax.swing.JFrame {
 
     private void rdoCateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoCateActionPerformed
         // TODO add your handling code here:
-        crud = new CategoryServiceImpl();
-        curenttAttr = "CATE";
-        fillToTableCate(crud.findAll());
+        checkRdo();
+        setTotalPage();
+        fillToTable();
+        setText();
     }//GEN-LAST:event_rdoCateActionPerformed
 
     private void rdoBrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoBrandActionPerformed
         // TODO add your handling code here:
-        crud = new BrandServiceImpl();
-        curenttAttr = "BR";
-        fillToTableBrand(crud.findAll());
+        checkRdo();
+        setTotalPage();
+        fillToTable();
+        setText();
     }//GEN-LAST:event_rdoBrandActionPerformed
 
     private void rdoColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoColorActionPerformed
         // TODO add your handling code here:
-        crud = new ColorServiceImpl();
-        curenttAttr = "COLOR";
-        fillToTableColor(crud.findAll());
+        checkRdo();
+        setTotalPage();
+        fillToTable();
+        setText();
     }//GEN-LAST:event_rdoColorActionPerformed
 
     private void rdoTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoTypeActionPerformed
         // TODO add your handling code here:
-        crud = new TypeProductServiceImpl();
-        curenttAttr = "TYPE";
-        fillToTableTypeProduct(crud.findAll());
+        checkRdo();
+        setTotalPage();
+        fillToTable();
+        setText();
     }//GEN-LAST:event_rdoTypeActionPerformed
 
     private void rdoDesignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoDesignActionPerformed
         // TODO add your handling code here:
-        crud = new DesignServiceImpl();
-        curenttAttr = "DE";
-        fillToTableDesign(crud.findAll());
+        checkRdo();
+        setTotalPage();
+        fillToTable();
+        setText();
     }//GEN-LAST:event_rdoDesignActionPerformed
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
@@ -1325,28 +1280,15 @@ public class MainJframe extends javax.swing.JFrame {
         tabpanel.setSelectedIndex(0);
     }//GEN-LAST:event_pBanHangMouseClicked
 
-    private void btn_updateProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateProductActionPerformed
-        //int check_updateProduct = 
-
-    }//GEN-LAST:event_btn_updateProductActionPerformed
-
-    private void btn_removeProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_removeProductActionPerformed
-
-    }//GEN-LAST:event_btn_removeProductActionPerformed
-
     private void tblListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListMouseClicked
         ind = tblList.getSelectedRow();
-        showData();
+        checkRdo();
+        showData(ind);
     }//GEN-LAST:event_tblListMouseClicked
 
     private void jTabbedPane3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane3MouseClicked
 
     }//GEN-LAST:event_jTabbedPane3MouseClicked
-
-    private void btn_addProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addProductActionPerformed
-        //int check_addProduct = 
-
-    }//GEN-LAST:event_btn_addProductActionPerformed
 
     private void pBanHang1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pBanHang1MouseClicked
         // TODO add your handling code here:
@@ -1365,13 +1307,71 @@ public class MainJframe extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        remove();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         update();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void rdoFrequencyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoFrequencyActionPerformed
+        checkRdo();
+        setTotalPage();
+        fillToTable();
+        setText();
+    }//GEN-LAST:event_rdoFrequencyActionPerformed
+
+    private void rdoPowerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoPowerActionPerformed
+        checkRdo();
+        setTotalPage();
+        fillToTable();
+        setText();
+    }//GEN-LAST:event_rdoPowerActionPerformed
+
+    private void btnFirstPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstPageActionPerformed
+        // TODO add your handling code here:
+        currentPage = 0;
+        checkRdo();
+         setText();
+        fillToTable();
+    }//GEN-LAST:event_btnFirstPageActionPerformed
+
+    private void btnLastPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastPageActionPerformed
+        // TODO add your handling code here:
+        currentPage = totalPage - 1;
+        checkRdo();
+         setText();
+        fillToTable();
+    }//GEN-LAST:event_btnLastPageActionPerformed
+
+    private void btnPrevPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevPageActionPerformed
+        // TODO add your handling code here:
+        currentPage = currentPage-1;
+        if (currentPage < 0) {
+            currentPage = totalPage - 1;
+        }
+        checkRdo();
+         setText();
+        fillToTable();
+    }//GEN-LAST:event_btnPrevPageActionPerformed
+
+    private void btnNextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextPageActionPerformed
+        // TODO add your handling code here:
+        currentPage = currentPage+1;
+        if (currentPage > totalPage - 1) {
+            currentPage = 0;
+        }
+        checkRdo();
+         setText();
+        fillToTable();
+    }//GEN-LAST:event_btnNextPageActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+        checkRdo();
+        fillToTable();
+        setText();
+    }//GEN-LAST:event_btnSearchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1409,14 +1409,15 @@ public class MainJframe extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_addProduct;
-    private javax.swing.JButton btn_removeProduct;
-    private javax.swing.JButton btn_updateProduct;
+    private javax.swing.JButton btnFirstPage;
+    private javax.swing.JButton btnLastPage;
+    private javax.swing.JButton btnNextPage;
+    private javax.swing.JButton btnPrevPage;
+    private javax.swing.JButton btnSearch;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox chkActivated;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
@@ -1462,7 +1463,7 @@ public class MainJframe extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane3;
     private javax.swing.JTable jTable3;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel lblPage;
     private javax.swing.JPanel pBanHang;
     private javax.swing.JPanel pBanHang1;
     private javax.swing.JPanel pBanHang4;
@@ -1475,10 +1476,13 @@ public class MainJframe extends javax.swing.JFrame {
     private javax.swing.JRadioButton rdoCate;
     private javax.swing.JRadioButton rdoColor;
     private javax.swing.JRadioButton rdoDesign;
+    private javax.swing.JRadioButton rdoFrequency;
+    private javax.swing.JRadioButton rdoPower;
     private javax.swing.JRadioButton rdoType;
     private javax.swing.JTabbedPane tabpanel;
     private javax.swing.JTable tblList;
     private javax.swing.JTextArea txtDes;
     private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

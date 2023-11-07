@@ -2,28 +2,20 @@ package com.poly.model;
 
 import java.util.Date;
 
+
 public class Category {
-  private Integer Id;
-    private String Name, Describe;
-  
-private Date CreatedTime;
-    public Category() {
-    }
+ private Integer Id;
+    private String Name;
+    private String Description;
+    private Date DateCreated;
+    private boolean Activated;
 
-    public String getName() {
-        return Name;
-    }
-
-    public void setName(String Name) {
+    public Category(Integer Id, String Name, String Description, Date DateCreated, boolean Activated) {
+        this.Id = Id;
         this.Name = Name;
-    }
-
-    public String getDescribe() {
-        return Describe;
-    }
-
-    public void setDescribe(String Describe) {
-        this.Describe = Describe;
+        this.Description = Description;
+        this.DateCreated = DateCreated;
+        this.Activated = Activated;
     }
 
     public Integer getId() {
@@ -34,23 +26,37 @@ private Date CreatedTime;
         this.Id = Id;
     }
 
-    public Date getCreatedTime() {
-        return CreatedTime;
+    public String getName() {
+        return Name;
     }
 
-    public void setCreatedTime(Date CreatedTime) {
-        this.CreatedTime = CreatedTime;
-    }
-
-    public Category(Integer Id, String Name, String Describe, Date CreatedTime) {
-        this.Id = Id;
+    public void setName(String Name) {
         this.Name = Name;
-        this.Describe = Describe;
-        this.CreatedTime = CreatedTime;
     }
 
-   
+    public String getDescription() {
+        return Description;
+    }
 
-   
-   
+    public void setDescription(String Description) {
+        this.Description = Description;
+    }
+
+    public Date getDateCreated() {
+        return DateCreated;
+    }
+
+    public void setDateCreated(Date DateCreated) {
+        this.DateCreated = DateCreated;
+    }
+
+    public boolean isActivated() {
+        return Activated;
+    }
+
+    public void setActivated(boolean Activated) {
+        this.Activated = Activated;
+    }
+
+    
 }

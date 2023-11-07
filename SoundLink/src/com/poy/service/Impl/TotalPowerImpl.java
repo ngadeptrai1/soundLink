@@ -1,6 +1,6 @@
 package com.poy.service.Impl;
 
-import com.poly.model.Category;
+import com.poly.model.TotalPower;
 import com.poy.service.CRUDService;
 import com.poy.service.DBConnect;
 
@@ -11,24 +11,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryServiceImpl implements CRUDService<Category> {
+public class TotalPowerImpl implements CRUDService<TotalPower> {
 
     Connection con = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
 
     @Override
-    public List<Category> findAll(int pageNums, String text) {
-        ArrayList<Category> listCategory = new ArrayList<>();
+    public List<TotalPower> findAll(int pageNums,String text) {
+        ArrayList<TotalPower> listTotalPower = new ArrayList<>();
         try {
-            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM Categories WHERE NAME LIKE ? ORDER BY ID OFFSET ? ROWS FETCH FIRST 5 ROWS ONLY";
+            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM Total_Powers WHERE NAME LIKE ?  ORDER BY ID OFFSET ? ROWS FETCH FIRST 5 ROWS ONLY";
             con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
-            ps.setString(1, "%'" + text + "'%");
-            ps.setInt(2, pageNums * 5);
+              ps.setString(1, "%'"+text+"'%");
+   ps.setInt(2, pageNums*5);
             rs = ps.executeQuery();
             while (rs.next()) {
-                listCategory.add(new Category(rs.getInt("Id"), rs.getString("Name"),
+                listTotalPower.add(new TotalPower(rs.getInt("Id"), rs.getString("Name"),
                         rs.getString("Description"),
                         rs.getDate("Date_Created"),
                         rs.getBoolean("Activated")));
@@ -40,14 +40,14 @@ public class CategoryServiceImpl implements CRUDService<Category> {
         } catch (SQLException e) {
             System.out.println("Lỗi Lấy Dữ Liệu: \n" + e.getMessage());
         }
-        return listCategory;
+        return listTotalPower;
     }
 
     @Override
     public int create(Object[] o) {
         int ind = -1;
         try {
-            String sql = "INSERT INTO Categorys\n"
+            String sql = "INSERT INTO Total_Powers \n"
                     + "    (Name, Date_Created, Description, Activated)\n"
                     + "VALUES(?,?,?,?)";
             con = com.poy.service.DBConnect.getConnection();
@@ -56,7 +56,7 @@ public class CategoryServiceImpl implements CRUDService<Category> {
             ps.setString(1, o[0].toString());
             ps.setDate(2, new java.sql.Date(System.currentTimeMillis()));
             ps.setString(3, o[1].toString());
-            ps.setInt(4, (boolean) o[2] ? 1 : 0);
+            ps.setInt(4,(boolean) o[2] ? 1 : 0);
             ind = ps.executeUpdate();
 
             con.close();
@@ -75,7 +75,7 @@ public class CategoryServiceImpl implements CRUDService<Category> {
     public int remove(String id) {
         int ind = -1;
         try {
-            String sql = "DELETE Categorys WHERE Id= ? ";
+            String sql = "DELETE Total_Powers WHERE Id= ? ";
 
             con = com.poy.service.DBConnect.getConnection();
 
@@ -98,13 +98,13 @@ public class CategoryServiceImpl implements CRUDService<Category> {
     public int update(Object[] o) {
         int ind = -1;
         try {
-            String sql = "UPDATE Categorys SET Name=?,Description=?,Activated=? WHERE Id=?";
+            String sql = "UPDATE Total_Powers SET Name=?,Description=?,Activated=? WHERE Id=?";
             con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
             ps.setString(1, o[1].toString());
             ps.setString(2, o[2].toString());
             ps.setString(3, o[4].toString());
-            ps.setInt(4, (int) o[0]);
+            ps.setInt(4,(int) o[0]);
             ind = ps.executeUpdate();
 
             con.close();
@@ -118,18 +118,17 @@ public class CategoryServiceImpl implements CRUDService<Category> {
         }
         return ind;
     }
-
-    @Override
+@Override
     public int getTotalPage(String text) {
-        int total = -1;
+         int total = -1;
         try {
-            String sql = "SELECT COUNT(*) FROM Categories WHERE NAME LIKE ?";
+            String sql = "SELECT COUNT(*) FROM Total_Powers WHERE NAME LIKE ?";
             con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
-            ps.setString(1, "%'" + text + "'%");
+            ps.setString(1, "%'"+text+"'%");
             rs = ps.executeQuery();
-            while (rs.next()) {
-                total = rs.getInt(1);
+           while (rs.next()) {                
+                  total = rs.getInt(1);
             }
             con.close();
             ps.close();
@@ -141,4 +140,5 @@ public class CategoryServiceImpl implements CRUDService<Category> {
         }
         return 0;
     }
+
 }

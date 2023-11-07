@@ -1,6 +1,6 @@
 package com.poy.service.Impl;
 
-import com.poly.model.Category;
+import com.poly.model.FrequencyRange;
 import com.poy.service.CRUDService;
 import com.poy.service.DBConnect;
 
@@ -11,24 +11,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryServiceImpl implements CRUDService<Category> {
+public class FrequencyRangeImpl implements CRUDService<FrequencyRange> {
 
     Connection con = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
 
     @Override
-    public List<Category> findAll(int pageNums, String text) {
-        ArrayList<Category> listCategory = new ArrayList<>();
+    public List<FrequencyRange> findAll(int pageNums, String text) {
+        ArrayList<FrequencyRange> listFrequencyRange = new ArrayList<>();
         try {
-            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM Categories WHERE NAME LIKE ? ORDER BY ID OFFSET ? ROWS FETCH FIRST 5 ROWS ONLY";
+            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM Frequency_Ranges WHERE NAME LIKE ? ORDER BY ID OFFSET ? ROWS FETCH FIRST 5 ROWS ONLY";
             con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
             ps.setString(1, "%'" + text + "'%");
             ps.setInt(2, pageNums * 5);
             rs = ps.executeQuery();
             while (rs.next()) {
-                listCategory.add(new Category(rs.getInt("Id"), rs.getString("Name"),
+                listFrequencyRange.add(new FrequencyRange(rs.getInt("Id"), rs.getString("Name"),
                         rs.getString("Description"),
                         rs.getDate("Date_Created"),
                         rs.getBoolean("Activated")));
@@ -40,14 +40,14 @@ public class CategoryServiceImpl implements CRUDService<Category> {
         } catch (SQLException e) {
             System.out.println("Lỗi Lấy Dữ Liệu: \n" + e.getMessage());
         }
-        return listCategory;
+        return listFrequencyRange;
     }
 
     @Override
     public int create(Object[] o) {
         int ind = -1;
         try {
-            String sql = "INSERT INTO Categorys\n"
+            String sql = "INSERT INTO Frequency_Ranges \n"
                     + "    (Name, Date_Created, Description, Activated)\n"
                     + "VALUES(?,?,?,?)";
             con = com.poy.service.DBConnect.getConnection();
@@ -75,7 +75,7 @@ public class CategoryServiceImpl implements CRUDService<Category> {
     public int remove(String id) {
         int ind = -1;
         try {
-            String sql = "DELETE Categorys WHERE Id= ? ";
+            String sql = "DELETE Frequency_Ranges WHERE Id= ? ";
 
             con = com.poy.service.DBConnect.getConnection();
 
@@ -98,7 +98,7 @@ public class CategoryServiceImpl implements CRUDService<Category> {
     public int update(Object[] o) {
         int ind = -1;
         try {
-            String sql = "UPDATE Categorys SET Name=?,Description=?,Activated=? WHERE Id=?";
+            String sql = "UPDATE Frequency_Ranges SET Name=?,Description=?,Activated=? WHERE Id=?";
             con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
             ps.setString(1, o[1].toString());
@@ -123,7 +123,7 @@ public class CategoryServiceImpl implements CRUDService<Category> {
     public int getTotalPage(String text) {
         int total = -1;
         try {
-            String sql = "SELECT COUNT(*) FROM Categories WHERE NAME LIKE ?";
+            String sql = "SELECT COUNT(*) FROM Frequency_Ranges WHERE NAME LIKE ?";
             con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
             ps.setString(1, "%'" + text + "'%");

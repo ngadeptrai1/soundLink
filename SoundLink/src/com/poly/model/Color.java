@@ -1,43 +1,61 @@
 package com.poly.model;
 
+import java.util.Date;
+
 public class Color {
-private Integer Id;
-    private String  color;
-    private boolean activated;
-    
+ private Integer Id;
+    private String Name;
+    private String Description;
+    private Date DateCreated;
+    private boolean Activated;
 
-    public Color() {
-    }
-
-    public Color(Integer Id, String color, boolean activated) {
+    public Color(Integer Id, String Name, String Description, Date DateCreated, boolean Activated) {
         this.Id = Id;
-        this.color = color;
-        this.activated = activated;
+        this.Name = Name;
+        this.Description = Description;
+        this.DateCreated = DateCreated;
+        this.Activated = Activated;
     }
 
-    public int getId() {
+    public Integer getId() {
         return Id;
     }
 
-    public void setId(int Id) {
+    public void setId(Integer Id) {
         this.Id = Id;
     }
 
-    public String getColor() {
-        return color;
+    public String getName() {
+        return Name;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setName(String Name) {
+        this.Name = Name;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String Description) {
+        this.Description = Description;
+    }
+
+    public Date getDateCreated() {
+        return DateCreated;
+    }
+
+    public void setDateCreated(Date DateCreated) {
+        this.DateCreated = DateCreated;
     }
 
     public boolean isActivated() {
-        return activated;
+        return Activated;
     }
 
-    public void setActivated(boolean activated) {
-        this.activated = activated;
+    public void setActivated(boolean Activated) {
+        this.Activated = Activated;
     }
 
-   
+    
 }

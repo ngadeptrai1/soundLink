@@ -1,54 +1,63 @@
 package com.poly.model;
 
+import java.util.Date;
+
 public class Design {
  private Integer Id;
-    private String  name, description;
-    private boolean activated;
-   
-
+    private String Name;
+    private String Description;
+    private Date DateCreated;
+    private boolean Activated;
     public Design() {
     }
 
-    public Design(Integer Id, String name, String description, boolean activated) {
+    public Design(Integer Id, String Name, String Description, Date DateCreated, boolean Activated) {
         this.Id = Id;
-        this.name = name;
-        this.description = description;
-        this.activated = activated;
+        this.Name = Name;
+        this.Description = Description;
+        this.DateCreated = DateCreated;
+        this.Activated = Activated;
     }
 
-    public int getId() {
+    public Integer getId() {
         return Id;
     }
 
-    public void setId(int Id) {
+    public void setId(Integer Id) {
         this.Id = Id;
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String Name) {
+        this.Name = Name;
     }
 
     public String getDescription() {
-        return description;
+        return Description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescription(String Description) {
+        this.Description = Description;
+    }
+
+    public Date getDateCreated() {
+        return DateCreated;
+    }
+
+    public void setDateCreated(Date DateCreated) {
+        this.DateCreated = DateCreated;
     }
 
     public boolean isActivated() {
-        return activated;
+        return Activated;
     }
 
-    public void setActivated(boolean activated) {
-        this.activated = activated;
+    public void setActivated(boolean Activated) {
+        this.Activated = Activated;
     }
 
   
-   
-
 }

@@ -2,15 +2,19 @@ package com.poly.model;
 
 import java.util.Date;
 
-public class Brand {
-
-    private Integer Id;
+public class TotalPower {
+ private Integer Id;
     private String Name;
     private String Description;
     private Date DateCreated;
     private boolean Activated;
 
-    public Brand() {
+    public TotalPower(Integer Id, String Name, String Description, Date DateCreated, boolean Activated) {
+        this.Id = Id;
+        this.Name = Name;
+        this.Description = Description;
+        this.DateCreated = DateCreated;
+        this.Activated = Activated;
     }
 
     public Integer getId() {
@@ -53,13 +57,5 @@ public class Brand {
         this.Activated = Activated;
     }
 
-    public Brand(Integer Id, String Name, String Description, Date DateCreated, boolean Activated) {
-        this.Id = Id;
-        this.Name = Name;
-        this.Description = Description;
-        this.DateCreated = DateCreated;
-        this.Activated = Activated;
-    }
-
-   
+  
 }

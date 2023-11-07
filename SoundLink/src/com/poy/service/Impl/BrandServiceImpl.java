@@ -5,7 +5,6 @@ import com.poly.model.Brand;
 import com.poy.service.CRUDService;
 import java.sql.*;
 import java.util.ArrayList;
-import com.poy.service.BrandService;
 
 public class BrandServiceImpl implements CRUDService<Brand> {
 
@@ -14,15 +13,17 @@ public class BrandServiceImpl implements CRUDService<Brand> {
     ResultSet rs = null;
 
     @Override
-    public List<Brand> findAll() {
+    public List<Brand> findAll(int pageNums,String text) {
         ArrayList<Brand> listBrand = new ArrayList<>();
         try {
-            String sql = "SELECT Brand_Id,Name,Date_Created,Description,Activated FROM BRANDS ORDER BY Brand_Id ASC";
+            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM BRANDS WHERE NAME LIKE ? ORDER BY ID OFFSET ? ROWS FETCH FIRST 5 ROWS ONLY";
             con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
+            ps.setString(1, "%"+text+"%");
+            ps.setInt(2, pageNums*5);
             rs = ps.executeQuery();
             while (rs.next()) {
-                listBrand.add(new Brand(rs.getInt("Brand_Id"),rs.getString("Name"),
+                listBrand.add(new Brand(rs.getInt("Id"), rs.getString("Name"),
                         rs.getString("Description"),
                         rs.getDate("Date_Created"),
                         rs.getBoolean("Activated")));
@@ -38,7 +39,7 @@ public class BrandServiceImpl implements CRUDService<Brand> {
     }
 
     @Override
-    public int create(Brand o) {
+    public int create(Object[] o) {
         int ind = -1;
         try {
             String sql = "INSERT INTO Brands\n"
@@ -46,19 +47,19 @@ public class BrandServiceImpl implements CRUDService<Brand> {
                     + "VALUES(?,?,?,?)";
             con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
-           
-            ps.setString(1, o.getBrandName());
+
+            ps.setString(1, o[0].toString());
             ps.setDate(2, new java.sql.Date(System.currentTimeMillis()));
-            ps.setString(3, o.getDescription());
-            ps.setInt(4, o.isActivated()?1:0);
-                ind = ps.executeUpdate();
+            ps.setString(3, o[1].toString());
+            ps.setInt(4,(boolean) o[2] ? 1 : 0);
+            ind = ps.executeUpdate();
 
             con.close();
             ps.close();
 
             System.out.println("Thêm Dữ Liệu Thành Công");
-            
-             return  ind;
+
+            return ind;
         } catch (SQLException e) {
             System.out.println("Lỗi Nhập Dữ Liệu: \n" + e.getMessage());
             return ind;
@@ -69,13 +70,13 @@ public class BrandServiceImpl implements CRUDService<Brand> {
     public int remove(String id) {
         int ind = -1;
         try {
-            String sql = "DELETE Brands WHERE brand_Id= ? ";
-            
+            String sql = "DELETE Brands WHERE Id= ? ";
+
             con = com.poy.service.DBConnect.getConnection();
-            
+
             ps = con.prepareStatement(sql);
             ps.setString(1, id);
-         ind =   ps.executeUpdate();
+            ind = ps.executeUpdate();
 
             ps.close();
             con.close();
@@ -83,33 +84,23 @@ public class BrandServiceImpl implements CRUDService<Brand> {
             return ind;
         } catch (SQLException e) {
             System.out.println("Xóa Thất Bại: \n" + e.getMessage());
-        
+
         }
         return ind;
     }
 
-    //return 0: Thêm Thành Công
-    //1:trống tên.
-    //2:thiếu ngày
-    //3:thiếu Description
-    //4:Lỗi SQL
     @Override
-    public int update(Brand o) {
-       int ind = -1;
+    public int update(Object[] o) {
+        int ind = -1;
         try {
-            String sql = "UPDATE Brands \n"
-                    + " SET Name=?,Date_Created=?,Description=?,Activated=? "
-                    + "WHERE brand_Id=?";
+            String sql = "UPDATE Brands SET Name=?,Description=?,Activated=? WHERE Id=?";
             con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
-
-            ps.setString(1, o.getBrandName());
-             ps.setDate(2, new java.sql.Date(o.getDateCreated().getTime()));
-            ps.setString(3, o.getDescription());
-            ps.setBoolean(4, o.isActivated());
-            ps.setInt(5, o.getId());
-
-          ind =  ps.executeUpdate();
+            ps.setString(1, o[1].toString());
+            ps.setString(2, o[2].toString());
+            ps.setString(3, o[4].toString());
+            ps.setInt(4,(int) o[0]);
+            ind = ps.executeUpdate();
 
             con.close();
             ps.close();
@@ -118,11 +109,35 @@ public class BrandServiceImpl implements CRUDService<Brand> {
             return ind;
         } catch (SQLException e) {
             System.out.println("Lỗi Nhập Dữ Liệu: \n" + e.getMessage());
-            
+
         }
         return ind;
     }
 
-    
+    @Override
+    public int getTotalPage(String text) {
+         int total = -1;
+        try {
+            String sql = "SELECT COUNT(*) FROM Brands WHERE NAME LIKE ?";
+            con = com.poy.service.DBConnect.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, "%"+text+"%");
+            rs = ps.executeQuery();
+            while (rs.next()) {                
+                  total = rs.getInt(1);
+            }
+          
+            con.close();
+            ps.close();
+            System.out.println("lấy số luowngjthanhf cong");
+            return total;
+        } catch (SQLException e) {
+            System.out.println("Lỗi Nhập Dữ Liệu: \n" + e.getMessage());
+
+        }
+        return 0;
+    }
+
+  
 
 }
