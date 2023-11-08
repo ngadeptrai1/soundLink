@@ -41,21 +41,33 @@ public class MainJframe extends javax.swing.JFrame {
         fillToTable();
         setText();
     }
-    
-    void setText(){
-    lblPage.setText("Trang số "+ (currentPage+1) + " Trên " + totalPage);
+
+    void setText() {
+        lblPage.setText("Trang số " + (currentPage + 1) + " Trên " + totalPage);
     }
-    
+
     void setTotalPage() {
         if (crud.getTotalPage(txtSearch.getText()) > 5) {
-            totalPage = crud.getTotalPage(txtSearch.getText())/5;
+            totalPage = crud.getTotalPage(txtSearch.getText()) / 5;
             if (crud.getTotalPage(txtSearch.getText()) % 5 != 0) {
-                 totalPage ++;
-            } 
+                totalPage++;
+            }
         } else {
             totalPage = 1;
         }
 
+    }
+
+    void clear() {
+        txtSearch.setText("");
+        txtName.setText("");
+        txtDes.setText("");
+        chkActivated.setSelected(false);
+        currentPage = 0;
+        checkRdo();
+        setTotalPage();
+        setText();
+        ind = -1;
     }
 
     void convertListBrandToList(List<Brand> list) {
@@ -105,7 +117,7 @@ public class MainJframe extends javax.swing.JFrame {
         model.setRowCount(0);
         for (Object[] p : currentList) {
             model.addRow(new Object[]{
-                p[1], p[2], p[3] ,(boolean)p[4] ? "Đang hoạt động" : "Ngừng"
+                p[1], p[2], p[3], (boolean) p[4] ? "Đang hoạt động" : "Ngừng"
             });
         }
     }
@@ -121,43 +133,41 @@ public class MainJframe extends javax.swing.JFrame {
     void checkRdo() {
         if (rdoBrand.isSelected()) {
             crud = new BrandServiceImpl();
-            convertListBrandToList(crud.findAll(currentPage,txtSearch.getText()));
-            curenttAttr = "BR";
+            convertListBrandToList(crud.findAll(currentPage, txtSearch.getText()));
+
         }
         if (rdoCate.isSelected()) {
             crud = new CategoryServiceImpl();
-            curenttAttr = "CATE";
-            convertListCateToList(crud.findAll(currentPage,txtSearch.getText()));
+
+            convertListCateToList(crud.findAll(currentPage, txtSearch.getText()));
         }
         if (rdoColor.isSelected()) {
             crud = new ColorServiceImpl();
-            curenttAttr = "COLOR";
-            convertListColorToList(crud.findAll(currentPage,txtSearch.getText()));
+
+            convertListColorToList(crud.findAll(currentPage, txtSearch.getText()));
         }
         if (rdoDesign.isSelected()) {
             crud = new DesignServiceImpl();
-            curenttAttr = "DE";
-            convertListDesignToList(crud.findAll(currentPage,txtSearch.getText()));
+
+            convertListDesignToList(crud.findAll(currentPage, txtSearch.getText()));
         }
         if (rdoType.isSelected()) {
             crud = new TypeProductServiceImpl();
-            curenttAttr = "TYPE";
-            convertListTypeToList(crud.findAll(currentPage,txtSearch.getText()));
+
+            convertListTypeToList(crud.findAll(currentPage, txtSearch.getText()));
         }
         if (rdoPower.isSelected()) {
             crud = new TotalPowerImpl();
-            curenttAttr = "TOTAL";
-            convertListTotalPowerToList(crud.findAll(currentPage,txtSearch.getText()));
+
+            convertListTotalPowerToList(crud.findAll(currentPage, txtSearch.getText()));
         }
         if (rdoFrequency.isSelected()) {
             crud = new FrequencyRangeImpl();
-            curenttAttr = "FRE";
-            convertListFreToList(crud.findAll(currentPage,txtSearch.getText()));
+
+            convertListFreToList(crud.findAll(currentPage, txtSearch.getText()));
         }
     }
-    
-    
-    
+
     private Object[] getData() {
         return new Object[]{
             txtName.getText(),
@@ -177,8 +187,13 @@ public class MainJframe extends javax.swing.JFrame {
                 if (quantity > 0) {
                     JOptionPane.showMessageDialog(this, "Thêm thành công");
                     ind = -1;
+                    clear();
+                    setText();
+                    fillToTable();
+
                 } else {
                     JOptionPane.showMessageDialog(this, "Thêm không thành công");
+
                 }
                 ind = -1;
             }
@@ -200,10 +215,14 @@ public class MainJframe extends javax.swing.JFrame {
                 data[2] = txtDes.getText();
                 data[4] = chkActivated.isSelected();
 
-                int quantity = crud.update(getData());
+                int quantity = crud.update(data);
                 if (quantity > 0) {
                     JOptionPane.showMessageDialog(this, "Cập nhật thành công");
                     ind = -1;
+
+                    clear();
+                    setText();
+                    fillToTable();
                 } else {
                     JOptionPane.showMessageDialog(this, "Cập nhật không thành công");
                 }
@@ -222,9 +241,16 @@ public class MainJframe extends javax.swing.JFrame {
                 if (quantity > 0) {
                     JOptionPane.showMessageDialog(this, "Xóa thành công ");
                     ind = -1;
+
+                    clear();
+
                     fillToTable();
                 } else {
                     JOptionPane.showMessageDialog(this, "Xóa thất bại  ");
+
+                    clear();
+
+                    fillToTable();
                     ind = -1;
                 }
 
@@ -1227,42 +1253,32 @@ public class MainJframe extends javax.swing.JFrame {
 
     private void rdoCateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoCateActionPerformed
         // TODO add your handling code here:
-        checkRdo();
-        setTotalPage();
+        clear();
         fillToTable();
-        setText();
     }//GEN-LAST:event_rdoCateActionPerformed
 
     private void rdoBrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoBrandActionPerformed
         // TODO add your handling code here:
-        checkRdo();
-        setTotalPage();
+        clear();
         fillToTable();
-        setText();
+
     }//GEN-LAST:event_rdoBrandActionPerformed
 
     private void rdoColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoColorActionPerformed
-        // TODO add your handling code here:
-        checkRdo();
-        setTotalPage();
+        clear();
         fillToTable();
-        setText();
     }//GEN-LAST:event_rdoColorActionPerformed
 
     private void rdoTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoTypeActionPerformed
         // TODO add your handling code here:
-        checkRdo();
-        setTotalPage();
+        clear();
         fillToTable();
-        setText();
     }//GEN-LAST:event_rdoTypeActionPerformed
 
     private void rdoDesignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoDesignActionPerformed
         // TODO add your handling code here:
-        checkRdo();
-        setTotalPage();
+        clear();
         fillToTable();
-        setText();
     }//GEN-LAST:event_rdoDesignActionPerformed
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
@@ -1315,24 +1331,20 @@ public class MainJframe extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void rdoFrequencyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoFrequencyActionPerformed
-        checkRdo();
-        setTotalPage();
+        clear();
         fillToTable();
-        setText();
     }//GEN-LAST:event_rdoFrequencyActionPerformed
 
     private void rdoPowerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoPowerActionPerformed
-        checkRdo();
-        setTotalPage();
+        clear();
         fillToTable();
-        setText();
     }//GEN-LAST:event_rdoPowerActionPerformed
 
     private void btnFirstPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstPageActionPerformed
         // TODO add your handling code here:
         currentPage = 0;
         checkRdo();
-         setText();
+        setText();
         fillToTable();
     }//GEN-LAST:event_btnFirstPageActionPerformed
 
@@ -1340,37 +1352,36 @@ public class MainJframe extends javax.swing.JFrame {
         // TODO add your handling code here:
         currentPage = totalPage - 1;
         checkRdo();
-         setText();
+        setText();
         fillToTable();
     }//GEN-LAST:event_btnLastPageActionPerformed
 
     private void btnPrevPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevPageActionPerformed
         // TODO add your handling code here:
-        currentPage = currentPage-1;
+        currentPage = currentPage - 1;
         if (currentPage < 0) {
             currentPage = totalPage - 1;
         }
         checkRdo();
-         setText();
+        setText();
         fillToTable();
     }//GEN-LAST:event_btnPrevPageActionPerformed
 
     private void btnNextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextPageActionPerformed
         // TODO add your handling code here:
-        currentPage = currentPage+1;
+        currentPage = currentPage + 1;
         if (currentPage > totalPage - 1) {
             currentPage = 0;
         }
         checkRdo();
-         setText();
+        setText();
         fillToTable();
     }//GEN-LAST:event_btnNextPageActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
-        checkRdo();
+        clear();
         fillToTable();
-        setText();
     }//GEN-LAST:event_btnSearchActionPerformed
 
     /**

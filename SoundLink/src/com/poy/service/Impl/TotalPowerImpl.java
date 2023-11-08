@@ -24,7 +24,7 @@ public class TotalPowerImpl implements CRUDService<TotalPower> {
             String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM Total_Powers WHERE NAME LIKE ?  ORDER BY ID OFFSET ? ROWS FETCH FIRST 5 ROWS ONLY";
             con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
-              ps.setString(1, "%'"+text+"'%");
+              ps.setString(1, "%"+text+"%");
    ps.setInt(2, pageNums*5);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -125,7 +125,7 @@ public class TotalPowerImpl implements CRUDService<TotalPower> {
             String sql = "SELECT COUNT(*) FROM Total_Powers WHERE NAME LIKE ?";
             con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
-            ps.setString(1, "%'"+text+"'%");
+            ps.setString(1, "%"+text+"%");
             rs = ps.executeQuery();
            while (rs.next()) {                
                   total = rs.getInt(1);
