@@ -58,6 +58,10 @@ public class Design {
     public void setActivated(boolean Activated) {
         this.Activated = Activated;
     }
-
+ public Object[] toObject(){
+    return new Object[]{
+    this.Id,this.Name,this.Description,this.DateCreated,this.Activated
+    };
+    }
   
 }

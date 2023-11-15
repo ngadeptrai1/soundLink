@@ -141,4 +141,31 @@ public class FrequencyRangeImpl implements CRUDService<FrequencyRange> {
         }
         return 0;
     }
+
+   @Override
+    public List<Object[]> findAllActivate() {
+
+        ArrayList<Object[]> listBrand = new ArrayList<>();
+        try {
+            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM Frequency_Ranges WHERE Activated = 1";
+            con = com.poy.service.DBConnect.getConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                FrequencyRange p = new FrequencyRange(rs.getInt("Id"), rs.getString("Name"),
+                        rs.getString("Description"),
+                        rs.getDate("Date_Created"),
+                        rs.getBoolean("Activated"));
+                listBrand.add(p.toObject());
+            }
+            rs.close();
+            ps.close();
+            con.close();
+          
+        } catch (SQLException e) {
+            System.out.println("Lỗi Lấy Dữ Liệu: \n" + e.getMessage());
+        }
+        return listBrand;   
+    
+    }
 }

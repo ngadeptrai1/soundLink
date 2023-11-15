@@ -18,6 +18,9 @@ public class TypeProduct {
         this.Activated = Activated;
     }
 
+    public TypeProduct() {
+    }
+
     
     
     public Integer getId() {
@@ -60,5 +63,9 @@ public class TypeProduct {
         this.Activated = Activated;
     }
 
-    
+     public Object[] toObject(){
+    return new Object[]{
+    this.Id,this.Name,this.Description,this.DateCreated,this.Activated
+    };
+    }
 }

@@ -60,6 +60,10 @@ public class Brand {
         this.DateCreated = DateCreated;
         this.Activated = Activated;
     }
-
+    public Object[] toObject(){
+    return new Object[]{
+    this.Id,this.Name,this.Description,this.DateCreated,this.Activated
+    };
+    }
    
 }

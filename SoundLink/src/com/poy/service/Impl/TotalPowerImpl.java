@@ -18,14 +18,14 @@ public class TotalPowerImpl implements CRUDService<TotalPower> {
     ResultSet rs = null;
 
     @Override
-    public List<TotalPower> findAll(int pageNums,String text) {
+    public List<TotalPower> findAll(int pageNums, String text) {
         ArrayList<TotalPower> listTotalPower = new ArrayList<>();
         try {
             String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM Total_Powers WHERE NAME LIKE ?  ORDER BY ID OFFSET ? ROWS FETCH FIRST 5 ROWS ONLY";
             con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
-              ps.setString(1, "%"+text+"%");
-   ps.setInt(2, pageNums*5);
+            ps.setString(1, "%" + text + "%");
+            ps.setInt(2, pageNums * 5);
             rs = ps.executeQuery();
             while (rs.next()) {
                 listTotalPower.add(new TotalPower(rs.getInt("Id"), rs.getString("Name"),
@@ -56,7 +56,7 @@ public class TotalPowerImpl implements CRUDService<TotalPower> {
             ps.setString(1, o[0].toString());
             ps.setDate(2, new java.sql.Date(System.currentTimeMillis()));
             ps.setString(3, o[1].toString());
-            ps.setInt(4,(boolean) o[2] ? 1 : 0);
+            ps.setInt(4, (boolean) o[2] ? 1 : 0);
             ind = ps.executeUpdate();
 
             con.close();
@@ -104,7 +104,7 @@ public class TotalPowerImpl implements CRUDService<TotalPower> {
             ps.setString(1, o[1].toString());
             ps.setString(2, o[2].toString());
             ps.setString(3, o[4].toString());
-            ps.setInt(4,(int) o[0]);
+            ps.setInt(4, (int) o[0]);
             ind = ps.executeUpdate();
 
             con.close();
@@ -118,17 +118,18 @@ public class TotalPowerImpl implements CRUDService<TotalPower> {
         }
         return ind;
     }
-@Override
+
+    @Override
     public int getTotalPage(String text) {
-         int total = -1;
+        int total = -1;
         try {
             String sql = "SELECT COUNT(*) FROM Total_Powers WHERE NAME LIKE ?";
             con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
-            ps.setString(1, "%"+text+"%");
+            ps.setString(1, "%" + text + "%");
             rs = ps.executeQuery();
-           while (rs.next()) {                
-                  total = rs.getInt(1);
+            while (rs.next()) {
+                total = rs.getInt(1);
             }
             con.close();
             ps.close();
@@ -139,6 +140,32 @@ public class TotalPowerImpl implements CRUDService<TotalPower> {
 
         }
         return 0;
+    }
+ @Override
+    public List<Object[]> findAllActivate() {
+
+        ArrayList<Object[]> listBrand = new ArrayList<>();
+        try {
+            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM Total_Powers WHERE Activated = 1";
+            con = com.poy.service.DBConnect.getConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                TotalPower p = new TotalPower(rs.getInt("Id"), rs.getString("Name"),
+                        rs.getString("Description"),
+                        rs.getDate("Date_Created"),
+                        rs.getBoolean("Activated"));
+                listBrand.add(p.toObject());
+            }
+            rs.close();
+            ps.close();
+            con.close();
+          
+        } catch (SQLException e) {
+            System.out.println("Lỗi Lấy Dữ Liệu: \n" + e.getMessage());
+        }
+        return listBrand;   
+    
     }
 
 }

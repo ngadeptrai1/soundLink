@@ -1,8 +1,6 @@
 
 create database DUAN1
 
-
-
 GO
 SET ANSI_NULLS ON
 GO
@@ -717,3 +715,26 @@ INSERT INTO [dbo].[Type_Products] ([Name], [Date_Created], [Description], [Activ
 ('In-wall Speakers', '2021-12-13', 'Speakers designed to be installed in walls', 1),
 ('Satellite Speakers', '2021-12-14', 'Small and compact speakers designed for surround sound', 1),
 ('Outdoor Speakers', '2021-12-15', 'Speakers designed for use outside', 0)
+
+
+
+SELECT COUNT(*) FROM Brands
+
+
+
+INSERT INTO [dbo].[Products] ([Name], [Description], [Activated], [Thumnail],
+[Total_Quantity], [Frequency_Range_id], [Total_Power_Id], [Brand_Id], [Type_Product_Id], [Categorie_Id], 
+[Design_Id], [Updated_Time], [Account_Id])
+VALUES 
+    ('tên', 'des', 1, 'anh', 100, (SELECT [Frequency_Range_Id] FROM [dbo].[Frequency_Ranges] WHERE [Name] = 'FrequencyName'), 
+    (SELECT [Total_Power_Id] FROM [dbo].[Total_Powers] WHERE [Name] = 'TotalName'), 
+    (SELECT [Brand_Id] FROM [dbo].[Brands] WHERE [Name] = 'Brand Name'),
+    (SELECT [Type_Product_Id] FROM [dbo].[Type_Products] WHERE [Name] = 'TypeName'),
+    (SELECT [Categorie_Id] FROM [dbo].[Categories] WHERE [Name] = 'CategoryName'),
+    (SELECT [Design_Id] FROM [dbo].[Designs] WHERE [Name] = 'DesignName'),
+    GETDATE(), 1)
+
+	select * from Account
+
+
+

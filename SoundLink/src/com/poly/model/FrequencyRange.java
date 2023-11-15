@@ -3,11 +3,15 @@ package com.poly.model;
 import java.util.Date;
 
 public class FrequencyRange {
- private Integer Id;
+
+    private Integer Id;
     private String Name;
     private String Description;
     private Date DateCreated;
     private boolean Activated;
+
+    public FrequencyRange() {
+    }
 
     public FrequencyRange(Integer Id, String Name, String Description, Date DateCreated, boolean Activated) {
         this.Id = Id;
@@ -16,6 +20,8 @@ public class FrequencyRange {
         this.DateCreated = DateCreated;
         this.Activated = Activated;
     }
+
+    
 
     public Integer getId() {
         return Id;
@@ -57,4 +63,9 @@ public class FrequencyRange {
         this.Activated = Activated;
     }
 
+    public Object[] toObject() {
+        return new Object[]{
+            this.Id, this.Name, this.Description, this.DateCreated, this.Activated
+        };
+    }
 }

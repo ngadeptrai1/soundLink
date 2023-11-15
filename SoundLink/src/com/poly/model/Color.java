@@ -9,6 +9,10 @@ public class Color {
     private Date DateCreated;
     private boolean Activated;
 
+    public Color() {
+    }
+
+    
     public Color(Integer Id, String Name, String Description, Date DateCreated, boolean Activated) {
         this.Id = Id;
         this.Name = Name;
@@ -57,5 +61,9 @@ public class Color {
         this.Activated = Activated;
     }
 
-    
+     public Object[] toObject(){
+    return new Object[]{
+    this.Id,this.Name,this.Description,this.DateCreated,this.Activated
+    };
+    }
 }
