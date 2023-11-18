@@ -89,7 +89,7 @@ public class ProductDetails {
     
     public Object[] toObject(){
     return new Object[]{
-    this.colorName,formatter.format(this.Price),this.quantity,this.activated
+    this.colorName,formatter.format(this.Price),this.quantity,this.activated ?"Hoạt Động" : "Ngừng Hoạt Động"
     };
         
         

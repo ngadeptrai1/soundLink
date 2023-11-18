@@ -158,7 +158,7 @@ public class ProductDetailImpl implements ProductDeatailsService {
             stmt.setInt(3, productDetails.getActivated() ? 1 : 0);
             rs = stmt.executeQuery();
             while (rs.next()) {
-
+                numberRecord = rs.getInt(1);
             }
 
         } catch (SQLException e) {
