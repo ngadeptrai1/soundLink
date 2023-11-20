@@ -147,7 +147,7 @@ public class ProductDetailImpl implements ProductDeatailsService {
         StringBuilder query = new StringBuilder();
         query.append(" SELECT COUNT(*) FROM PRODUCT_DETAILS PRDT");
         query.append(" JOIN COLORS CL ON PRDT.COLOR_ID = CL.ID WHERE PRDT.Product_id = ? ");
-        query.append("AND CL.name = ? ");
+        query.append("AND CL.name like CONCAT('%',?,'%') ");
         query.append("AND PRDT.Activated = ?");
 
         try {
@@ -172,7 +172,42 @@ public class ProductDetailImpl implements ProductDeatailsService {
         pr.setColorName("");
         pr.setActivated(Boolean.TRUE);
         ProductDetailImpl prd = new ProductDetailImpl();
-        System.out.println(prd.getALlByProduct(2, pr, 0));
+        System.out.println(prd.getTotalPage(2, pr));
     }
+
+    @Override
+    public ProductDetails findByColor(int productId, String colorName) {
+
+        StringBuilder query = new StringBuilder();
+        query.append(" SELECT PRDT.ID,CL.NAME AS ColorName,PRDT.Thumnail AS Thumnail ,PRDT.PRODUCT_ID,PRDT.QUANTITY AS Quantity,PRDT.ACTIVATED AS Activated,PRDT.PRODUCT_PRICE AS Price FROM PRODUCT_DETAILS PRDT");
+        query.append(" JOIN COLORS CL ON PRDT.COLOR_ID = CL.ID WHERE PRDT.Product_id = ? ");
+        query.append(" AND CL.name = ? ");
+        try {
+            conn = DBConnect.getConnection();
+            stmt = conn.prepareStatement(query.toString());
+            stmt.setInt(1, productId);
+            stmt.setString(2, colorName);
+           
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                ProductDetails prdt = new ProductDetails();
+                prdt.setId(rs.getInt("ID"));
+                prdt.setColorName(rs.getString("ColorName"));
+                prdt.setProductId(productId);
+                prdt.setThumnail(rs.getString("Thumnail"));
+                prdt.setActivated(rs.getBoolean("Activated"));
+                prdt.setPrice(rs.getLong("Price"));
+                prdt.setQuantity(rs.getInt("Quantity"));
+                return prdt;
+            }
+            conn.close();
+            rs.close();
+            stmt.close();
+            return null;
+        } catch (SQLException e) {
+            System.out.println("lỗi");
+            e.printStackTrace();
+        }
+        return null;    }
 
 }

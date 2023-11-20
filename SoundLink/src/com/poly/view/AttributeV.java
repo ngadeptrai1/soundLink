@@ -38,20 +38,20 @@ public class AttributeV extends javax.swing.JPanel {
     private int totalPage;
     private int currentPage = 0;
     private DefaultTableModel model;
-    private int ind =-1;
+    private int ind = -1;
 
     /**
      * Creates new form Attribute
      */
     public AttributeV() {
         initComponents();
-         currentPage = 0;
+        currentPage = 0;
         rdoBrand.setSelected(true);
         checkRdo();
         setTotalPage();
         setText();
         fillToTable();
-        
+
     }
 
     void convertListBrandToList(List<Brand> list) {
@@ -182,31 +182,39 @@ public class AttributeV extends javax.swing.JPanel {
 
     }
 
-      void add() {
+    void add() {
         if (txtName.getText().equalsIgnoreCase("")) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập tên");
         } else {
             int flag = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn thêm");
             checkRdo();
+
             if (flag == 0) {
-                int quantity = crud.create(getData());
-                if (quantity > 0) {
-                    JOptionPane.showMessageDialog(this, "Thêm thành công");
+                if (crud.findByName(txtName.getText()) == null) {
+                    int quantity = crud.create(getData());
+                    if (quantity > 0) {
+                        JOptionPane.showMessageDialog(this, "Thêm thành công");
+                        ind = -1;
+                        clear();
+                        checkRdo();
+                        setTotalPage();
+                        setText();
+                        fillToTable();
+
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Thêm không thành công");
+
+                    }
                     ind = -1;
-                    clear();
-                    setText();
-                    fillToTable();
-                    
                 } else {
-                    JOptionPane.showMessageDialog(this, "Thêm không thành công");
-                    
+                    JOptionPane.showMessageDialog(this, "Đã tồn tại !");
                 }
-                ind = -1;
+
             }
         }
-        
+
     }
-    
+
     void update() {
         if (ind < 0) {
             JOptionPane.showMessageDialog(this, "Bạn chưa chọn bảng nào ");
@@ -220,53 +228,60 @@ public class AttributeV extends javax.swing.JPanel {
                 data[1] = txtName.getText();
                 data[2] = txtDes.getText();
                 data[4] = chkActivated.isSelected();
-                
+
                 int quantity = crud.update(data);
                 if (quantity > 0) {
                     JOptionPane.showMessageDialog(this, "Cập nhật thành công");
                     ind = -1;
-                    
                     clear();
+                    checkRdo();
+                    setTotalPage();
                     setText();
                     fillToTable();
+
                 } else {
                     JOptionPane.showMessageDialog(this, "Cập nhật không thành công");
+                    checkRdo();
+                    setTotalPage();
+                    setText();
+                    fillToTable();
                 }
                 ind = -1;
             }
         }
     }
-    
+
     void remove() {
         int cf = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa ? ");
         checkRdo();
         if (ind > 0) {
             if (cf == 0) {
-                
+
                 int quantity = crud.remove(currentList.get(ind)[0].toString());
                 if (quantity > 0) {
                     JOptionPane.showMessageDialog(this, "Xóa thành công ");
                     ind = -1;
-                    
                     clear();
-                    
+                    checkRdo();
+                    setTotalPage();
+                    setText();
                     fillToTable();
                 } else {
                     JOptionPane.showMessageDialog(this, "Xóa thất bại  ");
-                    
                     clear();
-                    
+                    checkRdo();
+                    setTotalPage();
+                    setText();
                     fillToTable();
-                    ind = -1;
                 }
-                
+
             }
         } else {
             JOptionPane.showMessageDialog(this, "Bạn chưa chọn dòng nào ");
         }
-        
+
     }
-    
+
     private Object[] getData() {
         return new Object[]{
             txtName.getText(),
@@ -298,7 +313,6 @@ public class AttributeV extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
         txtName = new javax.swing.JTextField();
         jScrollPane5 = new javax.swing.JScrollPane();
         txtDes = new javax.swing.JTextArea();
@@ -399,13 +413,6 @@ public class AttributeV extends javax.swing.JPanel {
             }
         });
 
-        jButton5.setText("Xóa");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
         txtDes.setColumns(20);
         txtDes.setRows(5);
         jScrollPane5.setViewportView(txtDes);
@@ -451,8 +458,6 @@ public class AttributeV extends javax.swing.JPanel {
                 .addComponent(jButton2)
                 .addGap(18, 18, 18)
                 .addComponent(jButton4)
-                .addGap(18, 18, 18)
-                .addComponent(jButton5)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel28Layout.setVerticalGroup(
@@ -484,8 +489,7 @@ public class AttributeV extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5))
+                    .addComponent(jButton4))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -589,25 +593,26 @@ public class AttributeV extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(236, 236, 236)
-                        .addComponent(btnFirstPage, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38)
-                        .addComponent(btnPrevPage, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(69, 69, 69)
-                        .addComponent(lblPage)
-                        .addGap(62, 62, 62)
-                        .addComponent(btnNextPage, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38)
-                        .addComponent(btnLastPage, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 1036, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jPanel29, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel29, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(236, 236, 236)
+                                .addComponent(btnFirstPage, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(38, 38, 38)
+                                .addComponent(btnPrevPage, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(69, 69, 69)
+                                .addComponent(lblPage)
+                                .addGap(62, 62, 62)
+                                .addComponent(btnNextPage, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(38, 38, 38)
+                                .addComponent(btnLastPage, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 1036, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -704,10 +709,6 @@ public class AttributeV extends javax.swing.JPanel {
         update();
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
-
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
         checkRdo();
@@ -772,7 +773,6 @@ public class AttributeV extends javax.swing.JPanel {
     private javax.swing.JCheckBox chkActivated;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel28;

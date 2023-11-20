@@ -47,6 +47,7 @@ public class ProductDetailsV extends javax.swing.JPanel {
         setTotalPageProductDetail();
         setTextProductDetail();
         fillTotableProductDetail();
+        System.out.println(productDeatailDao.getTotalPage(GobalSelecttedProduct.selectProduct, getDataFindProductDetail()));
         
 
     }
@@ -77,6 +78,8 @@ public class ProductDetailsV extends javax.swing.JPanel {
     void setCob7() {
         crud = new ColorServiceImpl();
         lit = crud.findAllActivate();
+        cboColor.removeAllItems();
+        cboColorSearch.removeAllItems();
         cboColorSearch.addItem("");
         for (Object[] oj : lit) {
             cboColor.addItem((String) oj[1]);
@@ -196,7 +199,7 @@ public class ProductDetailsV extends javax.swing.JPanel {
             if (validateProductDetail()) {
                 int flag = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn thêm sản phẩm không ? ");
                 if (flag == 0) {
-                    {
+                    if(productDeatailDao.findByColor(GobalSelecttedProduct.selectProduct, cboColor.getSelectedItem().toString())==null){
                         int result = productDeatailDao.createProductDetail(getDataForm());
                         if (result > 0) {
                             JOptionPane.showMessageDialog(this, "Thêm thành công");
@@ -206,7 +209,10 @@ public class ProductDetailsV extends javax.swing.JPanel {
                         } else {
                             JOptionPane.showMessageDialog(this, "Thêm không thành công");
                         }
+                    }else{
+                        JOptionPane.showMessageDialog(this,"Sản phẩm đã tồn tại !");
                     }
+                    
 
                 }
             }
@@ -305,9 +311,8 @@ public class ProductDetailsV extends javax.swing.JPanel {
         btnRemoveProductDeatil = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
+        btnLamMoiSPCT1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        cboKhoangGia = new javax.swing.JComboBox<>();
-        jLabel27 = new javax.swing.JLabel();
         cboColorSearch = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         rdoActivatedProductDetail = new javax.swing.JRadioButton();
@@ -411,6 +416,16 @@ public class ProductDetailsV extends javax.swing.JPanel {
             }
         });
 
+        btnLamMoiSPCT1.setBackground(new java.awt.Color(255, 204, 0));
+        btnLamMoiSPCT1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnLamMoiSPCT1.setForeground(new java.awt.Color(51, 51, 51));
+        btnLamMoiSPCT1.setText("Làm mới thuộc tính");
+        btnLamMoiSPCT1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLamMoiSPCT1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -453,11 +468,13 @@ public class ProductDetailsV extends javax.swing.JPanel {
                                         .addComponent(btnAddProductDetail, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(41, 41, 41)
                                         .addComponent(btnUpdateProductDetail)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                                 .addComponent(btnRemoveProductDeatil, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(33, 33, 33)
                         .addComponent(btnLamMoiSPCT)
-                        .addGap(195, 195, 195))
+                        .addGap(26, 26, 26)
+                        .addComponent(btnLamMoiSPCT1)
+                        .addGap(93, 93, 93))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(71, 71, 71)
                         .addComponent(jLabel4)
@@ -498,7 +515,8 @@ public class ProductDetailsV extends javax.swing.JPanel {
                     .addComponent(btnAddProductDetail)
                     .addComponent(btnUpdateProductDetail)
                     .addComponent(btnLamMoiSPCT)
-                    .addComponent(btnRemoveProductDeatil))
+                    .addComponent(btnRemoveProductDeatil)
+                    .addComponent(btnLamMoiSPCT1))
                 .addGap(22, 22, 22))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 15, Short.MAX_VALUE)
@@ -509,9 +527,6 @@ public class ProductDetailsV extends javax.swing.JPanel {
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lọc sản phẩm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
-
-        jLabel27.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel27.setText("Giá tiền:");
 
         jLabel7.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel7.setText("Màu :");
@@ -535,11 +550,7 @@ public class ProductDetailsV extends javax.swing.JPanel {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(84, 84, 84)
-                .addComponent(jLabel27)
-                .addGap(18, 18, 18)
-                .addComponent(cboKhoangGia, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(126, 126, 126)
+                .addGap(440, 440, 440)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(14, 14, 14)
@@ -552,15 +563,13 @@ public class ProductDetailsV extends javax.swing.JPanel {
                         .addComponent(rdoActivatedProductDetail)
                         .addGap(75, 75, 75)
                         .addComponent(rdoProductDetail)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(219, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel27)
-                    .addComponent(cboKhoangGia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cboColorSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
                     .addComponent(jButton1))
@@ -702,13 +711,14 @@ public class ProductDetailsV extends javax.swing.JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        ColorV colorView = new ColorV();
+        ColorView colorView = new ColorView();
         colorView.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         fillTotableProductDetail();
+        setTotalPageProductDetail();
         setTextProductDetail();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -754,11 +764,17 @@ public class ProductDetailsV extends javax.swing.JPanel {
         fillTotableProductDetail();
     }//GEN-LAST:event_btnFirstProductDetailActionPerformed
 
+    private void btnLamMoiSPCT1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiSPCT1ActionPerformed
+        // TODO add your handling code here:
+        setCob7();
+    }//GEN-LAST:event_btnLamMoiSPCT1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddProductDetail;
     private javax.swing.JButton btnFirstProductDetail;
     private javax.swing.JButton btnLamMoiSPCT;
+    private javax.swing.JButton btnLamMoiSPCT1;
     private javax.swing.JButton btnLastProductDetal;
     private javax.swing.JButton btnNextProductDetail;
     private javax.swing.JButton btnPrevProductDetail;
@@ -767,14 +783,12 @@ public class ProductDetailsV extends javax.swing.JPanel {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cboColor;
     private javax.swing.JComboBox<String> cboColorSearch;
-    private javax.swing.JComboBox<String> cboKhoangGia;
     private javax.swing.JCheckBox chkActivatedProductDeatil;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;

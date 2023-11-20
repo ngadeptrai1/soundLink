@@ -18,4 +18,5 @@ public interface ProductService {
     int create(Product p);
     int getTotalPage( Product p);
     int updateProduct(Product p);
+    Product findByName(String name);
 }

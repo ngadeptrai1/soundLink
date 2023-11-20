@@ -235,6 +235,8 @@ public class ProductV extends javax.swing.JPanel {
     void setcbo1() {
         crud = new DesignServiceImpl();
         lit = crud.findAllActivate();
+        cboDesign.removeAllItems();
+        cboDesignSearch.removeAllItems();
         cboDesignSearch.addItem("");
         System.out.println(lit.get(0)[1]);
         for (Object[] oj : lit) {
@@ -247,6 +249,8 @@ public class ProductV extends javax.swing.JPanel {
     void setCob2() {
         crud = new TypeProductServiceImpl();
         lit = crud.findAllActivate();
+        cboType.removeAllItems();
+        cboTypeSearch.removeAllItems();
         cboTypeSearch.addItem("");
         for (Object[] oj : lit) {
             cboType.addItem((String) oj[1]);
@@ -259,6 +263,8 @@ public class ProductV extends javax.swing.JPanel {
     void setCob3() {
         crud = new FrequencyRangeImpl();
         lit = crud.findAllActivate();
+        cboFreq.removeAllItems();
+        cboFreqSearch.removeAllItems();
         cboFreqSearch.addItem("");
         for (Object[] oj : lit) {
             cboFreq.addItem((String) oj[1]);
@@ -271,6 +277,8 @@ public class ProductV extends javax.swing.JPanel {
     void setCob4() {
         crud = new TotalPowerImpl();
         lit = crud.findAllActivate();
+        cboTotal.removeAllItems();
+        cboTotalSearch.removeAllItems();
         cboTotalSearch.addItem("");
         for (Object[] oj : lit) {
             cboTotal.addItem((String) oj[1]);
@@ -283,6 +291,8 @@ public class ProductV extends javax.swing.JPanel {
     void setCob5() {
         crud = new CategoryServiceImpl();
         lit = crud.findAllActivate();
+        cboCate.removeAllItems();
+        cboCateSearch.removeAllItems();
         cboCateSearch.addItem("");
         for (Object[] oj : lit) {
             cboCate.addItem((String) oj[1]);
@@ -295,6 +305,8 @@ public class ProductV extends javax.swing.JPanel {
     void setCob6() {
         crud = new BrandServiceImpl();
         lit = crud.findAllActivate();
+        cboBrand.removeAllItems();
+        cboBrandSearch.removeAllItems();
         cboBrandSearch.addItem("");
         for (Object[] oj : lit) {
             cboBrand.addItem((String) oj[1]);
@@ -312,6 +324,7 @@ public class ProductV extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel9 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtNameProduct = new javax.swing.JTextField();
@@ -344,6 +357,7 @@ public class ProductV extends javax.swing.JPanel {
         btnDanhMuc = new javax.swing.JButton();
         btnKieuDang = new javax.swing.JButton();
         btnLoai = new javax.swing.JButton();
+        btnLamMoi1 = new javax.swing.JButton();
         jPanel17 = new javax.swing.JPanel();
         jPanel18 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
@@ -523,6 +537,16 @@ public class ProductV extends javax.swing.JPanel {
             }
         });
 
+        btnLamMoi1.setBackground(new java.awt.Color(255, 204, 0));
+        btnLamMoi1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnLamMoi1.setForeground(new java.awt.Color(51, 51, 51));
+        btnLamMoi1.setText("Làm mới thuộc tính");
+        btnLamMoi1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLamMoi1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
@@ -545,7 +569,7 @@ public class ProductV extends javax.swing.JPanel {
                             .addComponent(cboFreq, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cboTotal, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel9Layout.createSequentialGroup()
                                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btnTongCongSuat, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
@@ -563,28 +587,33 @@ public class ProductV extends javax.swing.JPanel {
                                     .addComponent(chkActi)))
                             .addGroup(jPanel9Layout.createSequentialGroup()
                                 .addComponent(btnHang, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(102, 102, 102)
-                                .addComponent(jLabel18)
-                                .addGap(18, 18, 18)
-                                .addComponent(cboDesign, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(101, 101, 101)
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel9Layout.createSequentialGroup()
+                                        .addComponent(jLabel18)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cboDesign, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(jPanel9Layout.createSequentialGroup()
+                                        .addComponent(jLabel20)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cboCate, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnKieuDang, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE))
-                            .addGroup(jPanel9Layout.createSequentialGroup()
-                                .addGap(147, 147, 147)
-                                .addComponent(jLabel20)
-                                .addGap(18, 18, 18)
-                                .addComponent(cboCate, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnDanhMuc, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnKieuDang, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
+                                    .addComponent(btnDanhMuc, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(60, 60, 60))
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(52, 52, 52)
-                        .addComponent(btnLamMoi)
-                        .addGap(12, 12, 12)
-                        .addComponent(btnAddProduct)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSua)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addComponent(btnLamMoi)
+                                .addGap(12, 12, 12)
+                                .addComponent(btnAddProduct)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSua))
+                            .addComponent(btnLamMoi1))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addGroup(jPanel9Layout.createSequentialGroup()
@@ -644,6 +673,8 @@ public class ProductV extends javax.swing.JPanel {
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btnSua)))
+                                .addGap(18, 18, 18)
+                                .addComponent(btnLamMoi1)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel9Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -769,9 +800,11 @@ public class ProductV extends javax.swing.JPanel {
         jLabel44.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel44.setText("Trạng thái : ");
 
+        buttonGroup1.add(rdoProductTrue);
         rdoProductTrue.setSelected(true);
         rdoProductTrue.setText("Đang bán");
 
+        buttonGroup1.add(rdoProductFalse);
         rdoProductFalse.setText("Ngưng bán");
 
         tblListProduct.setModel(new javax.swing.table.DefaultTableModel(
@@ -965,15 +998,23 @@ public class ProductV extends javax.swing.JPanel {
         if (checkProduct()) {
             int flag = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn thêm ?");
             if (flag == 0) {
-                int count = prDao.create(getDataProduct());
-                if (count > 0) {
+                if(prDao.findByName(txtNameProduct.getText())==null){
+                     int count = prDao.create(getDataProduct());
+                 if (count > 0) {
                     JOptionPane.showMessageDialog(this, "Thêm thành công");
                     setTotalPageProduct();
                     currentPage = 0;
                     setTextProduct();
                     ind = -1;
                     clear();
+                }else{
+                     JOptionPane.showMessageDialog(this,"Thêm sản phẩm mới thành công ");
+                 }
+                }else{
+                    JOptionPane.showMessageDialog(this,"Sản phẩm đã tồn tại");
                 }
+               
+               
             }
         }
 
@@ -995,37 +1036,37 @@ public class ProductV extends javax.swing.JPanel {
 
     private void btnHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHangActionPerformed
         // TODO add your handling code here:
-        BrandV brandView = new BrandV();
+        BrandView brandView = new BrandView();
         brandView.setVisible(true);
     }//GEN-LAST:event_btnHangActionPerformed
 
     private void btnDaiTanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDaiTanActionPerformed
         // TODO add your handling code here:
-        FrequencyV frequencyView = new FrequencyV();
+        FrequencyView frequencyView = new FrequencyView();
         frequencyView.setVisible(true);
     }//GEN-LAST:event_btnDaiTanActionPerformed
 
     private void btnTongCongSuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTongCongSuatActionPerformed
         // TODO add your handling code here:
-        TotalPowerV powerView = new TotalPowerV();
+        TotalPowerView powerView = new TotalPowerView();
         powerView.setVisible(true);
     }//GEN-LAST:event_btnTongCongSuatActionPerformed
 
     private void btnDanhMucActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDanhMucActionPerformed
         // TODO add your handling code here:
-        DesignV designView = new DesignV();
+        CategoriView designView = new CategoriView();
         designView.setVisible(true);
     }//GEN-LAST:event_btnDanhMucActionPerformed
 
     private void btnKieuDangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKieuDangActionPerformed
         // TODO add your handling code here:
-        TypeProductV typeProductsView = new TypeProductV();
+        DesignView typeProductsView = new DesignView();
         typeProductsView.setVisible(true);
     }//GEN-LAST:event_btnKieuDangActionPerformed
 
     private void btnLoaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoaiActionPerformed
         // TODO add your handling code here:
-        TypeProductV tp = new TypeProductV();
+        TypeProductView tp = new TypeProductView();
         tp.setVisible(true);
     }//GEN-LAST:event_btnLoaiActionPerformed
 
@@ -1122,6 +1163,11 @@ public class ProductV extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_cboCateSearchActionPerformed
 
+    private void btnLamMoi1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoi1ActionPerformed
+        // TODO add your handling code here:
+        setcbo1();
+    }//GEN-LAST:event_btnLamMoi1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddProduct;
@@ -1132,12 +1178,14 @@ public class ProductV extends javax.swing.JPanel {
     private javax.swing.JButton btnHang;
     private javax.swing.JButton btnKieuDang;
     private javax.swing.JButton btnLamMoi;
+    private javax.swing.JButton btnLamMoi1;
     private javax.swing.JButton btnLastPageProduct;
     private javax.swing.JButton btnLoai;
     private javax.swing.JButton btnNextPageProduct;
     private javax.swing.JButton btnPrevPageProduct;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnTongCongSuat;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cboBrand;
     private javax.swing.JComboBox<String> cboBrandSearch;
     private javax.swing.JComboBox<String> cboCate;

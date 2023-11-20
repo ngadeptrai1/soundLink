@@ -18,5 +18,7 @@ public interface ProductDeatailsService {
    int deleteProductDetails(String ID);
    
    int getTotalPage(int productId , ProductDetails productDetails );
+   
+   ProductDetails findByColor (int productId , String colorName);
  
 }

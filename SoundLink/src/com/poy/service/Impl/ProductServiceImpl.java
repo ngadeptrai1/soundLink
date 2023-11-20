@@ -162,6 +162,8 @@ public class ProductServiceImpl implements ProductService {
 
     public static void main(String[] args) {
         ProductServiceImpl p = new ProductServiceImpl();
+        
+        System.out.println(p.findByName("ưaawdw"));
 
     }
 
@@ -247,4 +249,51 @@ public class ProductServiceImpl implements ProductService {
         }
         return null;
     }
+
+    @Override
+    public Product findByName(String name) {
+  try {
+            StringBuilder query = new StringBuilder();
+            query.append("SELECT Product_Id ,sp.Name,sp.Description,sp.Activated,sp.Thumnail,sp.Total_Quantity,frequency.Name as frequencyName,brand.Name as brandName,tp.Name as tpName,typeProducts.Name as typeProductsName,categories.Name as categoriesName,designs.Name as designsName,sp.Updated_Time ");
+            query.append("FROM Products as sp JOIN Frequency_Ranges as frequency on sp.Frequency_Range_id = frequency.Id ");
+            query.append("JOIN Brands as brand on sp.Brand_Id = brand.Id ");
+            query.append("JOIN Total_Powers as tp on sp.Total_Power_Id = tp.Id ");
+            query.append("JOIN Categories as categories on sp.Categorie_Id = categories.Id ");
+            query.append("JOIN Designs as designs on sp.Design_Id = designs.Id ");
+            query.append("JOIN Type_Products as typeProducts on sp.Type_Product_Id = typeProducts.Id ");
+            query.append("WHERE sp.name = ? ");
+            con = DBConnect.getConnection();
+            ps = con.prepareStatement(query.toString());
+           ps.setString(1, name);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Product pr = new Product();
+                pr.setId(rs.getInt("Product_Id"));
+                pr.setBrandName(rs.getString("brandName"));
+                pr.setTotalPowerName(rs.getString("tpName"));
+                pr.setTypeProductName(rs.getString("typeProductsName"));
+                pr.setFrequencyRangeName(rs.getString("frequencyName"));
+                pr.setCategorieName(rs.getString("categoriesName"));
+                pr.setDesignName(rs.getString("designsName"));
+                pr.setName(rs.getString("Name"));
+
+                pr.setActivated(rs.getBoolean("Activated"));
+                pr.setDescription(rs.getString("Description"));
+                pr.setThumnail(rs.getString("Thumnail"));
+                pr.setUpdateTime(rs.getDate("Updated_Time"));
+               return pr;
+            }
+            rs.close();
+            ps.close();
+            con.close();
+            System.out.println("Lẫy Dữ Liệu Thành Công");
+            return null;
+        } catch (SQLException e) {
+            System.out.println("Lỗi Lấy Dữ Liệu sản phẩm: \n" + e.getMessage());
+        }
+        return null;    
+    }
+    
+    
 }

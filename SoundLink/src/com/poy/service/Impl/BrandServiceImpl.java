@@ -16,7 +16,7 @@ public class BrandServiceImpl implements CRUDService<Brand> {
     public List<Brand> findAll(int pageNums,String text) {
         ArrayList<Brand> listBrand = new ArrayList<>();
         try {
-            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM BRANDS WHERE NAME LIKE ? ORDER BY ID OFFSET ? ROWS FETCH FIRST 5 ROWS ONLY";
+            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM BRANDS WHERE NAME LIKE ? ORDER BY Date_Created  OFFSET ? ROWS FETCH FIRST 5 ROWS ONLY";
             con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
             ps.setString(1, "%"+text+"%");
@@ -143,7 +143,7 @@ public class BrandServiceImpl implements CRUDService<Brand> {
 
         ArrayList<Object[]> listBrand = new ArrayList<>();
         try {
-            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM BRANDS WHERE Activated = 1";
+            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM BRANDS WHERE Activated = 1 ORDER BY Date_Created DESC";
             con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -163,6 +163,32 @@ public class BrandServiceImpl implements CRUDService<Brand> {
         }
         return listBrand;   
     
+    }
+
+    @Override
+    public Brand findByName(String name) {
+        try {
+            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM BRANDS WHERE NAME = ? ";
+            con = com.poy.service.DBConnect.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, name);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+               return new Brand(rs.getInt("Id"), rs.getString("Name"),
+                        rs.getString("Description"),
+                        rs.getDate("Date_Created"),
+                        rs.getBoolean("Activated"));
+            } 
+            rs.close();
+            ps.close();
+            con.close();
+           return null;
+           
+          
+        } catch (SQLException e) {
+            System.out.println("Lỗi Lấy Dữ Liệu: \n" + e.getMessage());
+        }
+        return null;
     }
 
   

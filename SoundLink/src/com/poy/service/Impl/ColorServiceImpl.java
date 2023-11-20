@@ -145,9 +145,9 @@ public class ColorServiceImpl implements CRUDService<Color> {
      @Override
     public List<Object[]> findAllActivate() {
 
-        ArrayList<Object[]> listBrand = new ArrayList<>();
+        ArrayList<Object[]> listColors = new ArrayList<>();
         try {
-            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM Colors WHERE Activated = 1";
+            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM Colors WHERE Activated = 1 ORDER BY Date_Created DESC";
             con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -156,7 +156,7 @@ public class ColorServiceImpl implements CRUDService<Color> {
                         rs.getString("Description"),
                         rs.getDate("Date_Created"),
                         rs.getBoolean("Activated"));
-                listBrand.add(p.toObject());
+                listColors.add(p.toObject());
             }
             rs.close();
             ps.close();
@@ -165,7 +165,32 @@ public class ColorServiceImpl implements CRUDService<Color> {
         } catch (SQLException e) {
             System.out.println("Lỗi Lấy Dữ Liệu: \n" + e.getMessage());
         }
-        return listBrand;   
+        return listColors;   
     
     }
+
+    @Override
+    public Color findByName(String name) {
+ try {
+            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM Colors WHERE NAME = ? ";
+            con = com.poy.service.DBConnect.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, name);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+               return new Color(rs.getInt("Id"), rs.getString("Name"),
+                        rs.getString("Description"),
+                        rs.getDate("Date_Created"),
+                        rs.getBoolean("Activated"));
+            } 
+            rs.close();
+            ps.close();
+            con.close();
+           return null;
+           
+          
+        } catch (SQLException e) {
+            System.out.println("Lỗi Lấy Dữ Liệu: \n" + e.getMessage());
+        }
+        return null;    }
 }

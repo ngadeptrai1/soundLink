@@ -16,7 +16,7 @@ public class TypeProductServiceImpl implements CRUDService<TypeProduct> {
     public List<TypeProduct> findAll(int pageNums, String text) {
         ArrayList<TypeProduct> listTypeProduct = new ArrayList<>();
         try {
-            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM Type_Products WHERE NAME LIKE ? ORDER BY ID OFFSET ? ROWS FETCH FIRST 5 ROWS ONLY";
+            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM Type_Products WHERE NAME LIKE ? ORDER BY Date_Created OFFSET ? ROWS FETCH FIRST 5 ROWS ONLY";
             con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
             ps.setString(1, "%" + text + "%");
@@ -140,9 +140,9 @@ public class TypeProductServiceImpl implements CRUDService<TypeProduct> {
     @Override
     public List<Object[]> findAllActivate() {
 
-        ArrayList<Object[]> listBrand = new ArrayList<>();
+        ArrayList<Object[]> listType = new ArrayList<>();
         try {
-            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM Type_Products WHERE Activated = 1";
+            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM Type_Products WHERE Activated = 1 ORDER BY Date_Created DESC";
             con = com.poy.service.DBConnect.getConnection();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -151,7 +151,7 @@ public class TypeProductServiceImpl implements CRUDService<TypeProduct> {
                         rs.getString("Description"),
                         rs.getDate("Date_Created"),
                         rs.getBoolean("Activated"));
-                listBrand.add(p.toObject());
+                listType.add(p.toObject());
             }
             rs.close();
             ps.close();
@@ -160,7 +160,38 @@ public class TypeProductServiceImpl implements CRUDService<TypeProduct> {
         } catch (SQLException e) {
             System.out.println("Lỗi Lấy Dữ Liệu: \n" + e.getMessage());
         }
-        return listBrand;   
+        return listType;   
     
+    }
+
+    @Override
+    public TypeProduct findByName(String name) {
+ try {
+            String sql = "SELECT Id,Name,Date_Created,Description,Activated FROM Type_Products WHERE NAME = ? ";
+            con = com.poy.service.DBConnect.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, name);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+               return new TypeProduct(rs.getInt("Id"), rs.getString("Name"),
+                        rs.getString("Description"),
+                        rs.getDate("Date_Created"),
+                        rs.getBoolean("Activated"));
+            } 
+            rs.close();
+            ps.close();
+            con.close();
+           return null;
+           
+          
+        } catch (SQLException e) {
+            System.out.println("Lỗi Lấy Dữ Liệu: \n" + e.getMessage());
+        }
+        return null;
+    }
+    
+    public static void main(String[] args) {
+        TypeProductServiceImpl r = new TypeProductServiceImpl();
+        System.out.println(r.findByName("wefwedeweq"));
     }
 }

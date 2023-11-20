@@ -15,4 +15,6 @@ public interface CRUDService<E> {
     List<Object[]> findAllActivate();
     
     int getTotalPage(String text);
+    
+    E findByName(String name);
 }
