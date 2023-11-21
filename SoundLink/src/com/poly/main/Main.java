@@ -13,6 +13,7 @@ import com.poly.view.ProductDetailsV;
 import com.poly.view.ProductV;
 import com.poly.view.QuanLiGiamGiaV;
 import com.poly.view.ThongKeV;
+import com.poly.view.tesst;
 import java.awt.Component;
 import java.awt.Font;
 import javax.swing.JOptionPane;
@@ -52,7 +53,7 @@ public class Main extends javax.swing.JFrame {
                     if (index == 1) {
                         if (subIndex == 1) {
                             // show from sản phẩm
-                            showForm(productV);
+                            showForm(new tesst());
 
                         }
 

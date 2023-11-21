@@ -27,8 +27,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author dnha1
  */
-public class ProductDetailsV extends javax.swing.JPanel {
-
+public class ProductDetailsV extends javax.swing.JPanel{
     ProductDeatailsService productDeatailDao = new ProductDetailImpl();
     private int totalPage;
     private int currentPage = 0;
@@ -40,16 +39,12 @@ public class ProductDetailsV extends javax.swing.JPanel {
 
     public ProductDetailsV() {
         initComponents();
-        
         setCob7();
         setLabelProductDetail();
         currentPage = 0;
         setTotalPageProductDetail();
         setTextProductDetail();
         fillTotableProductDetail();
-        System.out.println(productDeatailDao.getTotalPage(GobalSelecttedProduct.selectProduct, getDataFindProductDetail()));
-        
-
     }
 
     void clear() {
@@ -456,19 +451,21 @@ public class ProductDetailsV extends javax.swing.JPanel {
                                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel16)
                             .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(jLabel16))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
                                 .addComponent(jLabel31)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(24, 24, 24)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(chkActivatedProductDeatil, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(btnAddProductDetail, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(41, 41, 41)
                                         .addComponent(btnUpdateProductDetail)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                                 .addComponent(btnRemoveProductDeatil, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(33, 33, 33)
                         .addComponent(btnLamMoiSPCT)

@@ -21,6 +21,7 @@ import java.awt.Image;
 import java.io.File;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
@@ -31,7 +32,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author dnha1
  */
-public class ProductV extends javax.swing.JPanel {
+public class ProductV extends javax.swing.JPanel{
 
     private int ind = -1;
     DefaultTableModel model2 = new DefaultTableModel();
@@ -358,6 +359,7 @@ public class ProductV extends javax.swing.JPanel {
         btnKieuDang = new javax.swing.JButton();
         btnLoai = new javax.swing.JButton();
         btnLamMoi1 = new javax.swing.JButton();
+        btnChiTiet = new javax.swing.JButton();
         jPanel17 = new javax.swing.JPanel();
         jPanel18 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
@@ -547,6 +549,16 @@ public class ProductV extends javax.swing.JPanel {
             }
         });
 
+        btnChiTiet.setBackground(new java.awt.Color(255, 204, 0));
+        btnChiTiet.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnChiTiet.setForeground(new java.awt.Color(51, 51, 51));
+        btnChiTiet.setText("SPCT");
+        btnChiTiet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChiTietActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
@@ -612,7 +624,10 @@ public class ProductV extends javax.swing.JPanel {
                                 .addComponent(btnAddProduct)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnSua))
-                            .addComponent(btnLamMoi1))))
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addComponent(btnLamMoi1)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnChiTiet)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
@@ -674,7 +689,9 @@ public class ProductV extends javax.swing.JPanel {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btnSua)))
                                 .addGap(18, 18, 18)
-                                .addComponent(btnLamMoi1)
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnLamMoi1)
+                                    .addComponent(btnChiTiet))
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel9Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -964,8 +981,8 @@ public class ProductV extends javax.swing.JPanel {
                 .addGap(58, 58, 58))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -977,11 +994,10 @@ public class ProductV extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
                 .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+                .addGap(24, 24, 24))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1037,6 +1053,7 @@ public class ProductV extends javax.swing.JPanel {
     private void btnHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHangActionPerformed
         // TODO add your handling code here:
         BrandView brandView = new BrandView();
+        
         brandView.setVisible(true);
     }//GEN-LAST:event_btnHangActionPerformed
 
@@ -1168,9 +1185,16 @@ public class ProductV extends javax.swing.JPanel {
         setcbo1();
     }//GEN-LAST:event_btnLamMoi1ActionPerformed
 
+    private void btnChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChiTietActionPerformed
+     
+       this.removeAll();
+        this.add(new ProductDetailsV());
+    }//GEN-LAST:event_btnChiTietActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddProduct;
+    private javax.swing.JButton btnChiTiet;
     private javax.swing.JButton btnDaiTan;
     private javax.swing.JButton btnDanhMuc;
     private javax.swing.JButton btnFindProduct3;
